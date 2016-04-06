@@ -14,4 +14,4 @@ This code is under development.  Please submit pull requests if you make improve
 
 ## License
 
-The Factory Tools library is licensed under the [MIT License](./LICENSE).
+The QL720NW class is licensed under the [MIT License](./LICENSE).
