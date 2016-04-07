@@ -24,6 +24,7 @@ class QL720NW {
     static CMD_SET_FONT         = "\x1B\x6B";
     
     static CMD_BARCODE          = "\x1B\x69"
+    static CMD_2D_BARCODE       = "\x1B\x69\x71"
     
     static LANDSCAPE            = "\x31";
     static PORTRAIT             = "\x30";
@@ -69,9 +70,32 @@ class QL720NW {
     static BARCODE_WIDTH_M      = "w2";
     static BARCODE_WIDTH_L      = "w3";
 
-    static BARCOD_RATIO_2_1     = "z0";
-    static BARCOD_RATIO_25_1    = "z1";
-    static BARCOD_RATIO_3_1     = "z2";
+    static BARCODE_RATIO_2_1     = "z0";
+    static BARCODE_RATIO_25_1    = "z1";
+    static BARCODE_RATIO_3_1     = "z2";
+
+    // 2D Barcode Parameters
+    static BARCODE_2D_CELL_SIZE_3   = "\x03";
+    static BARCODE_2D_CELL_SIZE_4   = "\x04";
+    static BARCODE_2D_CELL_SIZE_5   = "\x05";
+    static BARCODE_2D_CELL_SIZE_6   = "\x06";
+    static BARCODE_2D_CELL_SIZE_8   = "\x08";
+    static BARCODE_2D_CELL_SIZE_10  = "\x0A";
+
+    static BARCODE_2D_SYMBOL_MODEL_1    = "\x01";
+    static BARCODE_2D_SYMBOL_MODEL_2    = "\x02";
+    static BARCODE_2D_SYMBOL_MICRO_QR   = "\x03";
+
+    static BARCODE_2D_STRUCTURE_NOT_PARTITIONED = "\x00";
+    static BARCODE_2D_STRUCTURE_PARTITIONED     = "\x01";
+
+    static BARCODE_2D_ERROR_CORRECTION_HIGH_DENSITY             = "\x01";
+    static BARCODE_2D_ERROR_CORRECTION_STANDARD                 = "\x02";
+    static BARCODE_2D_ERROR_CORRECTION_HIGH_RELIABILITY         = "\x03";
+    static BARCODE_2D_ERROR_CORRECTION_ULTRA_HIGH_RELIABILITY   = "\x04";
+
+    static BARCODE_2D_DATA_INPUT_AUTO   = "\x00";
+    static BARCODE_2D_DATA_INPUT_MANUAL = "\x01";
 
     constructor(uart, init = true) {
         _uart = uart;
@@ -194,6 +218,51 @@ class QL720NW {
         return this;
     }
     
+    function write2dBarcode(data, config = {})
+    {
+        // Defaults
+        if (!("cell_size" in config)) { config["cell_size"] <- BARCODE_2D_CELL_SIZE_3; }
+        if (!("symbol_type" in config)) { config["symbol_type"] <- BARCODE_2D_SYMBOL_MODEL_2; }
+        if (!("structured_append" in config)) { config["structured_append"] <- BARCODE_2D_STRUCTURE_NOT_PARTITIONED; }
+        if (!("code_number" in config)) { config["code_number"] <- 0; }
+        if (!("num_partitions" in config)) { config["num_partitions"] <- 0; }
+        if (!("parity_data" in config)) { config["parity_data"] <- 0; }
+        if (!("error_correction" in config)) { config["error_correction"] <- BARCODE_2D_ERROR_CORRECTION_STANDARD; }
+        if (!("data_input_method" in config)) { config["data_input_method"] <- BARCODE_2D_DATA_INPUT_AUTO; }
+
+        // Check ranges
+        if (config.structured_append == BARCODE_2D_STRUCTURE_NOT_PARTITIONED) {
+            config.code_number = "\x00";
+            config.num_partitions = "\x00";
+            config.parity_data = "\x00";
+        }
+        else if (config.structured_append == BARCODE_2D_STRUCTURE_PARTITIONED) {
+            if (config.code_number < 1 || config.code_number > 16) throw "Unknown code number";
+            if (config.num_partitions < 2 || config.num_partitions > 16) throw "Unknown number of partitions";
+        }
+
+        // Start the barcode
+        _buffer.writestring(CMD_2D_BARCODE);
+
+        // Set the parameters
+        _buffer.writestring(config.cell_size);
+        _buffer.writestring(config.symbol_type);
+        _buffer.writestring(config.structured_append);
+        _buffer.writestring(config.code_number);
+        _buffer.writestring(config.num_partitions);
+        _buffer.writestring(config.parity_data);
+        _buffer.writestring(config.error_correction);
+        _buffer.writestring(config.data_input_method);
+
+        // Write data
+        _buffer.writestring(data);
+
+        // End the barcode
+        _buffer.writestring("\x5C\x5C\x5C");
+
+        return this;
+    }
+    
     // Prints the label
     function print() {
         _buffer.writestring(PAGE_FEED);
@@ -215,55 +284,3 @@ class QL720NW {
         return "QL720NW";
     }
 }
-
-uart <- hardware.uart12;
-uart.configure(9600, 8, PARITY_NONE, 1, NO_CTSRTS, function() {
-    server.log(uart.readstring());
-});
-
-printer <- QL720NW(uart)
-    .setOrientation(QL720NW.LANDSCAPE);
-
-printer
-    .setFont(QL720NW.FONT_BROUGHAM)
-        .setFontSize(QL720NW.FONT_SIZE_48).write("Brougham 48 ")
-        .setFontSize(QL720NW.FONT_SIZE_32).write("Brougham 32 ")
-        .setFontSize(QL720NW.FONT_SIZE_24).write("Brougham 24")
-        .newline()
-    .setFont(QL720NW.FONT_LETTER_GOTHIC_BOLD)
-        .setFontSize(QL720NW.FONT_SIZE_48).write("Letter Gothic 48 ")
-        .setFontSize(QL720NW.FONT_SIZE_32).write("Letter Gothic 32 ")
-        .setFontSize(QL720NW.FONT_SIZE_24).write("Letter Gothic 24")
-        .newline()
-    .setFont(QL720NW.FONT_BRUSSELS)
-        .setFontSize(QL720NW.FONT_SIZE_48).write("Brussels 48 ")
-        .setFontSize(QL720NW.FONT_SIZE_32).write("Brussels 32 ")
-        .setFontSize(QL720NW.FONT_SIZE_24).write("Brussels 24")
-        .newline()
-    .setFont(QL720NW.FONT_HELSINKI)
-        .setFontSize(QL720NW.FONT_SIZE_48).write("Helsink 48 ")
-        .setFontSize(QL720NW.FONT_SIZE_32).write("Helsink 32 ")
-        .setFontSize(QL720NW.FONT_SIZE_24).write("Helsink 24")
-        .newline()
-    .setFont(QL720NW.FONT_SAN_DIEGO)
-        .setFontSize(QL720NW.FONT_SIZE_48).write("San Diego 48 ")
-        .setFontSize(QL720NW.FONT_SIZE_32).write("San Diego 32 ")
-        .setFontSize(QL720NW.FONT_SIZE_24).write("San Diego 24")
-        .newline()
-
-printer.print();
-
-imp.sleep(0.5)
-
-printer
-    .setFont(QL720NW.FONT_HELSINKI)
-    .setFontSize(QL720NW.FONT_SIZE_48);
-
-printer.writeBarcode("HIKU 001", QL720NW.BARCODE_CODE39, true, QL720NW.BARCODE_WIDTH_M, 0.33);
-printer.writeBarcode(imp.getmacaddress(), QL720NW.BARCODE_CODE39, true, QL720NW.BARCODE_WIDTH_M, 0.33).newline();
-
-printer.print();
-
-
-server.log("Done");
-
