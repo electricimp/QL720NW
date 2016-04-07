@@ -8,7 +8,7 @@ This code is under development.  Please submit pull requests if you make improve
 
 - Refactor writeBarcode to use a settings table instead of a dozen optional parameters
 - More extensive testing (printer occasionally silently fails)
-- Implement 2D barcodes
+- Improve 2D barcode implementation to include more than QR codes and support partitioned data input
 - Documentation
 
 
