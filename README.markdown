@@ -127,16 +127,17 @@ printer.setFont(QL720NW.FONT_SAN_DIEGO)
 ```
 
 ### writeBarcode(*data[, config]*)
-The *writeBarcode* method creates a barcode.  This method takes one required parameter *data*, and one optional parameter a table of configuation parameters.
+The *writeBarcode* method sets a barcode to be printed.  This method takes one required parameter *data*, and one optional parameter a table of configuation parameters.
 
 | Config Table Key | Config Table Value | Default | Description |
 | ----------------------- | ------------------------------------- | ---------- | --------------- |
-| type | Barcode Type Constant (see chart below) | BARCODE_CODE39 | type of barcode to print |
-| charsBelowBarcode | Boolean | true | whether to print data below the barcode |
-| width | Barcode Width Constant (see chart below) | BARCODE_WIDTH_XS | width of barcode |
-| height | Float | 0.5 | height of barcode in inches |
-| ratio | Barcode Ratio Constants (see chart below) | BARCODE_RATIO_2_1 | ratio between thick and thin bars, setting available only for type BARCODE_CODE39, BARCODE_ITF, or BARCODE_CODABAR |
+| *type* | Barcode Type Constant  | BARCODE_CODE39 | Type of barcode to print. See chart below. |
+| *charsBelowBarcode* | Boolean | true | Whether to print data below the barcode. |
+| *width* | Barcode Width Constant | BARCODE_WIDTH_XS | Width of barcode. See chart below. |
+| *height* | Float | 0.5 | Height of barcode in inches. |
+| *ratio* | Barcode Ratio Constants | BARCODE_RATIO_2_1 | Ratio between thick and thin bars. Setting available only for type BARCODE_CODE39, BARCODE_ITF, or BARCODE_CODABAR. See chart below. |
 
+####Barcode Type Constants
 | Barcode Type Constants | Data Length |
 | --------------------------------- | -------------------------------- |
 | BARCODE_CODE39 | 1-50 characters ("*" is not included)
@@ -152,6 +153,7 @@ The *writeBarcode* method creates a barcode.  This method takes one required par
 | BARCODE_POSTNET | 5 characters, 9  characters,11 characters |
 | BARCODE_UPC_EXTENTION | 2 characters, 5 characters |
 
+####Barcode Width Constants
 | Barcode Width Constants |
 | ---------------------------------- |
 | BARCODE_WIDTH_XXS |
@@ -160,11 +162,14 @@ The *writeBarcode* method creates a barcode.  This method takes one required par
 | BARCODE_WIDTH_M |
 | BARCODE_WIDTH_L |
 
+####Barcode Ratio Constants
 | Barcode Ratio Constants |
 | ---------------------------------- |
 | BARCODE_RATIO_2_1 |
 | BARCODE_RATIO_25_1 |
 | BARCODE_RATIO_3_1 |
+
+**NOTE:** This method only sets the barcode to be printed.  To print you must call the *print* method.
 
 ```squirrel
 barcodeConfig <- {"type" : QL720NW.BARCODE_CODE39,
