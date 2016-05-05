@@ -238,23 +238,26 @@ class QL720NW {
 
     function write2dBarcode(data, config = {}) {
         // Set defaults
-        if (!("cell_size" in config)) { config["cell_size"] <- BARCODE_2D_CELL_SIZE_3; }
-        if (!("symbol_type" in config)) { config["symbol_type"] <- BARCODE_2D_SYMBOL_MODEL_2; }
-        if (!("structured_append" in config)) { config["structured_append"] <- BARCODE_2D_STRUCTURE_NOT_PARTITIONED; }
-        if (!("code_number" in config)) { config["code_number"] <- 0; }
-        if (!("num_partitions" in config)) { config["num_partitions"] <- 0; }
+        if (!("cell_size" in config)) { config.cell_size <- BARCODE_2D_CELL_SIZE_3; }
+        if (!("symbol_type" in config)) { config.symbol_type <- BARCODE_2D_SYMBOL_MODEL_2; }
+        if (!("structured_append_partitioned" in config)) { config.structured_append_partitioned <- false; }
+        if (!("code_number" in config)) { config.code_number <- 0; }
+        if (!("num_partitions" in config)) { config.num_partitions <- 0; }
+
         if (!("parity_data" in config)) { config["parity_data"] <- 0; }
         if (!("error_correction" in config)) { config["error_correction"] <- BARCODE_2D_ERROR_CORRECTION_STANDARD; }
         if (!("data_input_method" in config)) { config["data_input_method"] <- BARCODE_2D_DATA_INPUT_AUTO; }
 
         // Check ranges
-        if (config.structured_append == BARCODE_2D_STRUCTURE_NOT_PARTITIONED) {
+        if (config.structured_append_partitioned) {
+            config.structured_append <- BARCODE_2D_STRUCTURE_PARTITIONED;
+            if (config.code_number < 1 || config.code_number > 16) throw "Unknown code number";
+            if (config.num_partitions < 2 || config.num_partitions > 16) throw "Unknown number of partitions";
+        } else {
+            config.structured_append <- BARCODE_2D_STRUCTURE_NOT_PARTITIONED;
             config.code_number = "\x00";
             config.num_partitions = "\x00";
             config.parity_data = "\x00";
-        } else if (config.structured_append == BARCODE_2D_STRUCTURE_PARTITIONED) {
-            if (config.code_number < 1 || config.code_number > 16) throw "Unknown code number";
-            if (config.num_partitions < 2 || config.num_partitions > 16) throw "Unknown number of partitions";
         }
 
         // Start the barcode

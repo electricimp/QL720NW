@@ -59,7 +59,7 @@ imp.sleep(0.5);
 printer.write2dBarcode(imp.getmacaddress(), {
     "cell_size": QL720NW.BARCODE_2D_CELL_SIZE_5,
     "symbol_type": QL720NW.BARCODE_2D_SYMBOL_MODEL_2,
-    "structured_append": QL720NW.BARCODE_2D_STRUCTURE_NOT_PARTITIONED,
+    "structured_append_partitioned": false,
     "error_correction": QL720NW.BARCODE_2D_ERROR_CORRECTION_STANDARD,
     "data_input_method": QL720NW.BARCODE_2D_DATA_INPUT_AUTO
 });

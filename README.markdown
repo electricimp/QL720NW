@@ -107,6 +107,7 @@ The *writen* method sets a line of text to be printed.  This method takes one re
 **NOTE:** This method only sets the line to be printed.  To print you must call the *print* method.
 
 ```squirrel
+// print an italicized line of text then an underlined line of text
 printer.setFont(QL720NW.FONT_SAN_DIEGO)
        .setFontSize(QL720NW.FONT_SIZE_48)
        .writen("Hello World", QL720NW.BOLD | QL720NW.ITALIC )
@@ -118,6 +119,7 @@ printer.setFont(QL720NW.FONT_SAN_DIEGO)
 The *newline* method adds a new line in the stored data to be printed.
 
 ```squirrel
+// print two lines of text
 printer.setFont(QL720NW.FONT_SAN_DIEGO)
        .setFontSize(QL720NW.FONT_SIZE_48)
        .write("Hello World")
@@ -129,7 +131,8 @@ printer.setFont(QL720NW.FONT_SAN_DIEGO)
 ### writeBarcode(*data[, config]*)
 The *writeBarcode* method sets a barcode to be printed.  This method takes one required parameter *data*, and one optional parameter a table of configuation parameters.
 
-| Config Table Key | Config Table Value | Default | Description |
+#####Configuation Table
+| Config Table Key | Value Data type | Default Value | Description |
 | ----------------------- | ------------------------------------- | ---------- | --------------- |
 | *type* | Barcode Type Constant  | BARCODE_CODE39 | Type of barcode to print. See chart below. |
 | *charsBelowBarcode* | Boolean | true | Whether to print data below the barcode. |
@@ -137,8 +140,8 @@ The *writeBarcode* method sets a barcode to be printed.  This method takes one r
 | *height* | Float | 0.5 | Height of barcode in inches. |
 | *ratio* | Barcode Ratio Constants | BARCODE_RATIO_2_1 | Ratio between thick and thin bars. Setting available only for type BARCODE_CODE39, BARCODE_ITF, or BARCODE_CODABAR. See chart below. |
 
-####Barcode Type Constants
-| Barcode Type Constants | Data Length |
+#####Barcode Type
+| Barcode Type Constant | Data Length |
 | --------------------------------- | -------------------------------- |
 | BARCODE_CODE39 | 1-50 characters ("*" is not included)
 | BARCODE_ITF | 1-64 characters |
@@ -153,8 +156,8 @@ The *writeBarcode* method sets a barcode to be printed.  This method takes one r
 | BARCODE_POSTNET | 5 characters, 9  characters,11 characters |
 | BARCODE_UPC_EXTENTION | 2 characters, 5 characters |
 
-####Barcode Width Constants
-| Barcode Width Constants |
+#####Barcode Width
+| Barcode Width Constant |
 | ---------------------------------- |
 | BARCODE_WIDTH_XXS |
 | BARCODE_WIDTH_XS |
@@ -162,8 +165,8 @@ The *writeBarcode* method sets a barcode to be printed.  This method takes one r
 | BARCODE_WIDTH_M |
 | BARCODE_WIDTH_L |
 
-####Barcode Ratio Constants
-| Barcode Ratio Constants |
+#####Barcode Ratio
+| Barcode Ratio Constant |
 | ---------------------------------- |
 | BARCODE_RATIO_2_1 |
 | BARCODE_RATIO_25_1 |
@@ -172,6 +175,7 @@ The *writeBarcode* method sets a barcode to be printed.  This method takes one r
 **NOTE:** This method only sets the barcode to be printed.  To print you must call the *print* method.
 
 ```squirrel
+// print the device's mac address as a barcode
 barcodeConfig <- {"type" : QL720NW.BARCODE_CODE39,
                               "charsBelowBarcode" : true,
                               "width" : QL720NW.BARCODE_WIDTH_M,
@@ -182,14 +186,56 @@ printer.writeBarcode(imp.getmacaddress(), barcodeConfig).print();
 ```
 
 ### write2dBarcode(*data[, config]*)
-The *writeBarcode* method creates a 2D QR barcode.  This method takes one required parameter *data*, and one optional parameter a table of configuation parameters.
+The *write2dBarcode* method creates a 2D QR barcode.  This method takes one required parameter *data*, and one optional parameter a table of configuation parameters.
 
+#####Configuation Table
+| Config Table Key | Value Data type | Default Value | Description |
+| ----------------------- | ------------------------------------- | ---------- | --------------- |
+| *cell_size* | Cell Size Constant  | BARCODE_2D_CELL_SIZE_3 | Specifies the dot size per cell side. See chart below. |
+| *symbol_type* | Symbol Type Constant | BARCODE_2D_SYMBOL_MODEL_2 | Symbol type to be used. See chart below |
+| *structured_append_partitioned* | Boolean | false | Whether the structured append is partitioned. |
+| *code_number* | Integer | 0 | Indicates the number of the symbol in a partitioned QR Code. Must set a number between 1-16 if *structured_append_partitioned* is set to true. |
+| *num_partitions* | Integer | 0 | Indicates the total number of symbols in a partitioned QR Code. Must set a number between 2-16 if *structured_append_partitioned* is set to true. |
+| *parity_data* | hexadecimal | 0 | Value in bytes of exclusively OR'ing all the print data (print data before partition) |
+| *error_correction* | Error Correction Constant | BARCODE_2D_ERROR_CORRECTION_STANDARD | See chart below. |
+| *data_input_method* | Data Input Method Constant | BARCODE_2D_DATA_INPUT_AUTO | Auto: BARCODE_2D_DATA_INPUT_AUTO, Manual: BARCODE_2D_DATA_INPUT_MANUAL |
 
+#####Cell Size
+| Cell Size Constant |
+| BARCODE_2D_CELL_SIZE_3 |
+| BARCODE_2D_CELL_SIZE_4 |
+| BARCODE_2D_CELL_SIZE_5 |
+| BARCODE_2D_CELL_SIZE_6 |
+| BARCODE_2D_CELL_SIZE_8 |
+| BARCODE_2D_CELL_SIZE_10 |
+
+#####Symbol Type
+| Symbol Type Constant |
+| BARCODE_2D_SYMBOL_MODEL_1 |
+| BARCODE_2D_SYMBOL_MODEL_2 |
+| BARCODE_2D_SYMBOL_MICRO_QR |
+
+#####Error Correction
+| Error Correction Constant | Level |
+| BARCODE_2D_ERROR_CORRECTION_HIGH_DENSITY | High-density level: L 7% |
+| BARCODE_2D_ERROR_CORRECTION_STANDARD | Standard level: M 15% |
+| BARCODE_2D_ERROR_CORRECTION_HIGH_RELIABILITY | High-reliability level: Q 25% |
+| BARCODE_2D_ERROR_CORRECTION_ULTRA_HIGH_RELIABILITY | Ultra-high-reliability level: H 30% |
+
+```squirrel
+// Print QR Code, all config params optional
+printer.write2dBarcode(imp.getmacaddress(), {
+    "cell_size": QL720NW.BARCODE_2D_CELL_SIZE_5,
+});
+
+printer.print();
+```
 
 ### print()
 The *print* method prints the stored data set by the *write*, *writen*, *writeBarcode* and/or *write2dBarcode* methods.
 
 ```squirrel
+// print a line of text
 printer.write("Hello World").print();
 ```
 
