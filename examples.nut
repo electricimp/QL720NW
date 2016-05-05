@@ -43,8 +43,13 @@ printer
     .setFontSize(QL720NW.FONT_SIZE_48);
 
 // Print two Code39 Barcodes
-printer.writeBarcode("HIKU 001", QL720NW.BARCODE_CODE39, true, QL720NW.BARCODE_WIDTH_M, 0.33);
-printer.writeBarcode(imp.getmacaddress(), QL720NW.BARCODE_CODE39, true, QL720NW.BARCODE_WIDTH_M, 0.33).newline();
+barcodeSettings <- { "type" : QL720NW.BARCODE_CODE39,
+                                  "charsBelowBarcode" : true,
+                                  "width" : QL720NW.BARCODE_WIDTH_M,
+                                  "height" : 0.33 };
+
+printer.writeBarcode("HIKU 001", barcodeSettings);
+printer.writeBarcode(imp.getmacaddress(), barcodeSettings).newline();
 
 printer.print();
 

@@ -40,7 +40,7 @@ printer.initialize();
 ```
 
 ### setOrientation(*orientation*)
-The *setOrientation* method sets the orientation of the printed text to landscape or portrait.  This method takes one required parameter *orientation*, a class constant.
+The *setOrientation* method sets the orientation of the printed text.  This method takes one required parameter *orientation*, a class constant LANDSCAPE or PORTRAIT.
 
 ```squirrel
 // set to landscape mode
@@ -59,7 +59,7 @@ The *setLeftMargin* method sets the left margin...
 doesn't appear to be working as expected
 
 ### setFont(*font*)
-The *setFont* method sets the font using the *font* parameter.  See the table below for supported fonts.
+The *setFont* method sets the font using the *font* parameter.  See the table below for supported font class constants.
 
 | Font Constant |
 | ------------ |
@@ -75,7 +75,7 @@ printer.setFont(QL720NW.FONT_HELSINKI);
 ```
 
 ### setFontSize(*size*)
-The *setFontSize* method sets the font size using the *size* parameter.  See the table below for supported font sizes.
+The *setFontSize* method sets the font size using the *size* parameter.  See the table below for supported font size class constants.
 
 | Size Constant |
 | ------------ |
@@ -89,7 +89,7 @@ printer.setFont(QL720NW.FONT_SIZE_32);
 ```
 
 ### write(*text[, options]*)
-The *write* method sets the text to be printed.  This method takes one required parameter *text*, the text to be printed, and one optional parameter *options*.  By default no options are set.  Options are selected by OR'ing together the constants ITALIC, BOLD, or UNDERLINE.
+The *write* method sets the text to be printed.  This method takes one required parameter *text*, the text to be printed, and one optional parameter *options*.  By default no options are set.  Options are selected by OR'ing together the class constants ITALIC, BOLD, or UNDERLINE.
 
 **NOTE:** This method only sets the text to be printed.  To print you must call the *print* method.
 
@@ -126,9 +126,60 @@ printer.setFont(QL720NW.FONT_SAN_DIEGO)
        .print();
 ```
 
-### writeBarcode(*data[, type = "t0", charsBelowText = true, width = "w4", height = 0.5, ratio = "z3"]*)
+### writeBarcode(*data[, config]*)
+The *writeBarcode* method creates a barcode.  This method takes one required parameter *data*, and one optional parameter a table of configuation parameters.
+
+| Config Table Key | Config Table Value | Default | Description |
+| ----------------------- | ------------------------------------- | ---------- | --------------- |
+| type | Barcode Type Constant (see chart below) | BARCODE_CODE39 | type of barcode to print |
+| charsBelowBarcode | Boolean | true | whether to print data below the barcode |
+| width | Barcode Width Constant (see chart below) | BARCODE_WIDTH_XS | width of barcode |
+| height | Float | 0.5 | height of barcode in inches |
+| ratio | Barcode Ratio Constants (see chart below) | BARCODE_RATIO_2_1 | ratio between thick and thin bars, setting available only for type BARCODE_CODE39, BARCODE_ITF, or BARCODE_CODABAR |
+
+| Barcode Type Constants | Data Length |
+| --------------------------------- | -------------------------------- |
+| BARCODE_CODE39 | 1-50 characters ("*" is not included)
+| BARCODE_ITF | 1-64 characters |
+| BARCODE_EAN_8_13 | 7 characters (EAN-8), 12 characters (EAN-13) |
+| BARCODE_UPC_A | 11 characters |
+| BARCODE_UPC_E | 6 characters |
+| BARCODE_CODABAR | 3-64 characters (Must begin and end with A, B, C, D) |
+| BARCODE_CODE128 | 1-64 characters |
+| BARCODE_GS1_128 | 1-64 characters |
+| BARCODE_RSS | 3-15 characters (begins with "01") |
+| BARCODE_CODE93 | 1-64 characters |
+| BARCODE_POSTNET | 5 characters, 9  characters,11 characters |
+| BARCODE_UPC_EXTENTION | 2 characters, 5 characters |
+
+| Barcode Width Constants |
+| ---------------------------------- |
+| BARCODE_WIDTH_XXS |
+| BARCODE_WIDTH_XS |
+| BARCODE_WIDTH_S |
+| BARCODE_WIDTH_M |
+| BARCODE_WIDTH_L |
+
+| Barcode Ratio Constants |
+| ---------------------------------- |
+| BARCODE_RATIO_2_1 |
+| BARCODE_RATIO_25_1 |
+| BARCODE_RATIO_3_1 |
+
+```squirrel
+barcodeConfig <- {"type" : QL720NW.BARCODE_CODE39,
+                              "charsBelowBarcode" : true,
+                              "width" : QL720NW.BARCODE_WIDTH_M,
+                              "height" : 1,
+                              "ratio" : QL720NW.BARCODE_RATIO_3_1 }
+
+printer.writeBarcode(imp.getmacaddress(), barcodeConfig).print();
+```
 
 ### write2dBarcode(*data[, config]*)
+The *writeBarcode* method creates a 2D QR barcode.  This method takes one required parameter *data*, and one optional parameter a table of configuation parameters.
+
+
 
 ### print()
 The *print* method prints the stored data set by the *write*, *writen*, *writeBarcode* and/or *write2dBarcode* methods.
@@ -142,6 +193,7 @@ printer.write("Hello World").print();
 - Refactor writeBarcode to use a settings table instead of a dozen optional parameters
 - More extensive testing (printer occasionally silently fails)
 - Wake printer from standby mode
+- fix margin methods
 - Improve 2D barcode implementation to include more than QR codes and support partitioned data input
 - Documentation
 

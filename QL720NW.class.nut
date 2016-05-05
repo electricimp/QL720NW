@@ -52,6 +52,7 @@ class QL720NW {
     static BARCODE_CODE39       = "t0";
     static BARCODE_ITF          = "t1";
     static BARCODE_EAN_8_13     = "t5";
+    static BARCODE_UPC_A = "t5";
     static BARCODE_UPC_E        = "t6";
     static BARCODE_CODABAR      = "t9";
     static BARCODE_CODE128      = "ta";
@@ -187,40 +188,56 @@ class QL720NW {
     }
 
     // Barcode commands
-    function writeBarcode(data, type = "t0", charsBelowText = true, width = "w4", height = 0.5, ratio = "z3") {
+    function writeBarcode(data, config = {}) {
+        // Set defaults
+        if(!("type" in config)) { config.type <- BARCODE_CODE39; }
+        if(!("charsBelowBarcode" in config)) { config.charsBelowBarcode <- true; }
+        if(!("width" in config)) { config.width <- BARCODE_WIDTH_XS; }
+        if(!("height" in config)) { config.height <- 0.5; }
+        if(!("ratio" in config)) { config.ratio <- BARCODE_RATIO_2_1; }
+
         // Start the barcode
         _buffer.writestring(CMD_BARCODE);
 
         // Set the type
-        _buffer.writestring(type);
+        _buffer.writestring(config.type);
 
         // Set the text option
-        if (charsBelowText) _buffer.writestring(BARCODE_CHARS);
-        else _buffer.writestring(BARCODE_NO_CHARS);
+        if (config.charsBelowBarcode) {
+            _buffer.writestring(BARCODE_CHARS);
+        } else {
+            _buffer.writestring(BARCODE_NO_CHARS);
+        }
 
         // Set the width
-        _buffer.writestring(width);
+        _buffer.writestring(config.width);
 
         // Convert height to dots
-        local h = (height*300).tointeger();
-
+        local h = (config.height*300).tointeger();
+        // Set the height
         _buffer.writestring("h");               // Height marker
         _buffer.writen(h & 0xFF, 'b');          // Lower bit of height
         _buffer.writen((h / 256) & 0xFF, 'b');  // Upper bit of height
 
         // Set the ratio of thick to thin bars
-        _buffer.writestring(ratio);
+        _buffer.writestring(config.ratio);
 
+        // Set data
         _buffer.writestring("\x62");
         _buffer.writestring(data);
-        _buffer.writestring("\x5C");
+
+        // End the barcode
+        if (config.type == BARCODE_CODE128 || config.type == BARCODE_GS1_128 || config.type == BARCODE_CODE93) {
+            _buffer.writestring("\x5C\x5C\x5C");
+        } else {
+            _buffer.writestring("\x5C");
+        }
 
         return this;
     }
 
-    function write2dBarcode(data, config = {})
-    {
-        // Defaults
+    function write2dBarcode(data, config = {}) {
+        // Set defaults
         if (!("cell_size" in config)) { config["cell_size"] <- BARCODE_2D_CELL_SIZE_3; }
         if (!("symbol_type" in config)) { config["symbol_type"] <- BARCODE_2D_SYMBOL_MODEL_2; }
         if (!("structured_append" in config)) { config["structured_append"] <- BARCODE_2D_STRUCTURE_NOT_PARTITIONED; }
@@ -235,8 +252,7 @@ class QL720NW {
             config.code_number = "\x00";
             config.num_partitions = "\x00";
             config.parity_data = "\x00";
-        }
-        else if (config.structured_append == BARCODE_2D_STRUCTURE_PARTITIONED) {
+        } else if (config.structured_append == BARCODE_2D_STRUCTURE_PARTITIONED) {
             if (config.code_number < 1 || config.code_number > 16) throw "Unknown code number";
             if (config.num_partitions < 2 || config.num_partitions > 16) throw "Unknown number of partitions";
         }
