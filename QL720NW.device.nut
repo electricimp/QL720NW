@@ -1,18 +1,18 @@
 class QL720NW {
-    static version = [1,0,0];
-    
+    static version = [0,1,0];
+
     _uart = null;   // A preconfigured UART
     _buffer = null; // buffer for building text
 
     // Commands
     static CMD_ESCP_ENABLE      = "\x1B\x69\x61\x00";
     static CMD_ESCP_INIT        = "\x1B\x40";
-    
+
     static CMD_SET_ORIENTATION  = "\x1B\x69\x4C"
     static CMD_SET_TB_MARGINS   = "\x1B\x28\x63\x34\x30";
     static CMD_SET_LEFT_MARGIN  = "\x1B\x6C";
     static CMD_SET_RIGHT_MARGIN = "\x1B\x51";
-    
+
     static CMD_ITALIC_START     = "\x1b\x34";
     static CMD_ITALIC_STOP      = "\x1B\x35";
     static CMD_BOLD_START       = "\x1b\x45";
@@ -22,10 +22,10 @@ class QL720NW {
 
     static CMD_SET_FONT_SIZE    = "\x1B\x58\x00";
     static CMD_SET_FONT         = "\x1B\x6B";
-    
+
     static CMD_BARCODE          = "\x1B\x69"
     static CMD_2D_BARCODE       = "\x1B\x69\x71"
-    
+
     static LANDSCAPE            = "\x31";
     static PORTRAIT             = "\x30";
 
@@ -100,32 +100,32 @@ class QL720NW {
     constructor(uart, init = true) {
         _uart = uart;
         _buffer = blob();
-        
+
         if (init) return initialize();
     }
-    
+
     function initialize() {
-        _uart.write(CMD_ESCP_ENABLE);
-        _uart.write(CMD_ESCP_INIT);
-        
+        _uart.write(CMD_ESCP_ENABLE); // Select ESC/P mode
+        _uart.write(CMD_ESCP_INIT); // Initialize ESC/P mode
+
         return this;
     }
-    
-    
+
+
     // Formating commands
     function setOrientation(orientation) {
         // Create a new buffer that we prepend all of this information to
         local orientationBuffer = blob();
-        
+
         // Set the orientation
         orientationBuffer.writestring(CMD_SET_ORIENTATION);
         orientationBuffer.writestring(orientation);
-        
+
         _uart.write(orientationBuffer);
-        
+
         return this;
     }
-    
+
     function setRightMargin(column) {
         return _setMargin(CMD_SET_RIGHT_MARGIN, column);
     }
@@ -133,91 +133,91 @@ class QL720NW {
     function setLeftMargin(column) {
         return _setMargin(CMD_SET_LEFT_MARGIN, column);;
     }
-    
+
     function setFont(font) {
         if (font < 0 || font > 4) throw "Unknown font";
-        
+
         _buffer.writestring(CMD_SET_FONT);
         _buffer.writen(font, 'b');
-        
+
         return this;
     }
-    
+
     function setFontSize(size) {
         if (size != 24 && size != 32 && size != 48) throw "Invalid font size";
-        
+
         _buffer.writestring(CMD_SET_FONT_SIZE)
         _buffer.writen(size, 'b');
         _buffer.writen(0, 'b');
-        
+
         return this;
     }
-    
+
     // Text commands
     function write(text, options = 0) {
         local beforeText = "";
         local afterText = "";
-        
+
         if (options & ITALIC) {
             beforeText  += CMD_ITALIC_START;
             afterText   += CMD_ITALIC_STOP;
         }
-        
+
         if (options & BOLD) {
             beforeText  += CMD_BOLD_START;
             afterText   += CMD_BOLD_STOP;
         }
-        
+
         if (options & UNDERLINE) {
             beforeText  += CMD_UNDERLINE_START;
             afterText   += CMD_UNDERLINE_STOP;
         }
-        
+
         _buffer.writestring(beforeText + text + afterText);
-        
+
         return this;
     }
-    
+
     function writen(text, options = 0) {
         return write(text + TEXT_NEWLINE, options);
     }
-    
+
     function newline() {
         return write(TEXT_NEWLINE);
     }
-    
+
     // Barcode commands
     function writeBarcode(data, type = "t0", charsBelowText = true, width = "w4", height = 0.5, ratio = "z3") {
         // Start the barcode
         _buffer.writestring(CMD_BARCODE);
-        
+
         // Set the type
         _buffer.writestring(type);
-        
+
         // Set the text option
         if (charsBelowText) _buffer.writestring(BARCODE_CHARS);
         else _buffer.writestring(BARCODE_NO_CHARS);
-        
+
         // Set the width
         _buffer.writestring(width);
-        
+
         // Convert height to dots
         local h = (height*300).tointeger();
-        
+
         _buffer.writestring("h");               // Height marker
         _buffer.writen(h & 0xFF, 'b');          // Lower bit of height
         _buffer.writen((h / 256) & 0xFF, 'b');  // Upper bit of height
-        
+
         // Set the ratio of thick to thin bars
         _buffer.writestring(ratio);
-        
+
         _buffer.writestring("\x62");
         _buffer.writestring(data);
         _buffer.writestring("\x5C");
-        
+
         return this;
     }
-    
+
     function write2dBarcode(data, config = {})
     {
         // Defaults
@@ -262,24 +262,24 @@ class QL720NW {
 
         return this;
     }
-    
+
     // Prints the label
     function print() {
         _buffer.writestring(PAGE_FEED);
         _uart.write(_buffer);
         _buffer = blob();
     }
-    
+
     function _setMargin(command, margin) {
         local marginBuffer = blob();
         marginBuffer.writestring(command);
         marginBuffer.writen(margin & 0xFF, 'b');
-        
+
         _uart.write(marginBuffer);
-        
+
         return this;
     }
-    
+
     function _typeof() {
         return "QL720NW";
     }

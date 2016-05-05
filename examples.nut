@@ -1,3 +1,8 @@
+uart <- hardware.uart12;
+uart.configure(9600, 8, PARITY_NONE, 1, NO_CTSRTS, function() {
+    server.log(uart.readstring());
+});
+
 printer <- QL720NW(uart)
     .setOrientation(QL720NW.LANDSCAPE);
 
