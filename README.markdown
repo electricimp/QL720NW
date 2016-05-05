@@ -202,6 +202,7 @@ The *write2dBarcode* method creates a 2D QR barcode.  This method takes one requ
 
 #####Cell Size
 | Cell Size Constant |
+| ------------------------- |
 | BARCODE_2D_CELL_SIZE_3 |
 | BARCODE_2D_CELL_SIZE_4 |
 | BARCODE_2D_CELL_SIZE_5 |
@@ -211,12 +212,14 @@ The *write2dBarcode* method creates a 2D QR barcode.  This method takes one requ
 
 #####Symbol Type
 | Symbol Type Constant |
+| ------------------------------- |
 | BARCODE_2D_SYMBOL_MODEL_1 |
 | BARCODE_2D_SYMBOL_MODEL_2 |
 | BARCODE_2D_SYMBOL_MICRO_QR |
 
 #####Error Correction
 | Error Correction Constant | Level |
+| ---------------------------------- | ------- |
 | BARCODE_2D_ERROR_CORRECTION_HIGH_DENSITY | High-density level: L 7% |
 | BARCODE_2D_ERROR_CORRECTION_STANDARD | Standard level: M 15% |
 | BARCODE_2D_ERROR_CORRECTION_HIGH_RELIABILITY | High-reliability level: Q 25% |
