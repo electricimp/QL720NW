@@ -1,5 +1,5 @@
 class QL720NW {
-    static version = [1,0,0];
+    static version = [0,0,1];
     
     _uart = null;   // A preconfigured UART
     _buffer = null; // buffer for building text
