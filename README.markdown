@@ -234,6 +234,8 @@ printer.write2dBarcode(imp.getmacaddress(), {
 printer.print();
 ```
 
+**NOTE:** This method only sets the line to be printed.  To print you must call the *print* method.
+
 ### print()
 The *print* method prints the stored data set by the *write*, *writen*, *writeBarcode* and/or *write2dBarcode* methods.
 
