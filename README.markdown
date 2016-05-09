@@ -177,10 +177,10 @@ The *writeBarcode* method sets a barcode to be printed.  This method takes one r
 ```squirrel
 // print the device's mac address as a barcode
 barcodeConfig <- {"type" : QL720NW.BARCODE_CODE39,
-                              "charsBelowBarcode" : true,
-                              "width" : QL720NW.BARCODE_WIDTH_M,
-                              "height" : 1,
-                              "ratio" : QL720NW.BARCODE_RATIO_3_1 }
+                  "charsBelowBarcode" : true,
+                  "width" : QL720NW.BARCODE_WIDTH_M,
+                  "height" : 1,
+                  "ratio" : QL720NW.BARCODE_RATIO_3_1 }
 
 printer.writeBarcode(imp.getmacaddress(), barcodeConfig).print();
 ```
