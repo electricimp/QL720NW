@@ -61,11 +61,20 @@ The *setLeftMargin* method sets the left margin.  This method takes one required
 ![Margin Column Settings](./MarginFigure.png)
 
 ######Cases when margin settings are ignored include:
-- left maring to the right of the right margin
+- left margin to the right of the right margin
 - difference between right and left margin less than one character
 - print media continuous length tape with no page length specified and orientation is landscape
 
-
+```squirrel
+printer
+  .setOrientation(QL720NW.PORTRAIT);
+  .setFont(QL720NW.FONT_BROUGHAM)
+  .setFontSize(QL720NW.FONT_SIZE_32)
+  .write("hello world")
+  .setLeftMargin(5)
+  .setRightMargin(11)
+  .print();
+```
 
 ### setFont(*font*)
 The *setFont* method sets the font using the *font* parameter.  See the table below for supported font class constants.
