@@ -3,7 +3,7 @@
 Class for Brother Label Printer.
 This code is under development.  Please submit pull requests if you make improvements.
 
-**To add this library to your project, add** `#require "QL720NW.class.nut:0.1.0"` **to the top of your agent code**
+**To add this code to your project, copy and paste the QL720NW.class.nut file into your device code**
 
 ## Class Usage
 All public methods in the QL720NW class return this, allowing you to easily chain multiple commands together:
