@@ -66,6 +66,7 @@ The *setLeftMargin* method sets the left margin.  This method takes one required
 - print media continuous length tape with no page length specified and orientation is landscape
 
 ```squirrel
+// print hello and world on different lines using margin settings
 printer
   .setOrientation(QL720NW.PORTRAIT);
   .setFont(QL720NW.FONT_BROUGHAM)
@@ -244,7 +245,7 @@ The *write2dBarcode* method creates a 2D QR barcode.  This method takes one requ
 | BARCODE_2D_ERROR_CORRECTION_ULTRA_HIGH_RELIABILITY | Ultra-high-reliability level: H 30% |
 
 ```squirrel
-// Print QR Code, all config params optional
+// print QR code
 printer.write2dBarcode(imp.getmacaddress(), {
     "cell_size": QL720NW.BARCODE_2D_CELL_SIZE_5,
 });
@@ -264,12 +265,8 @@ printer.write("Hello World").print();
 
 ## To do
 
-- Refactor writeBarcode to use a settings table instead of a dozen optional parameters
 - More extensive testing (printer occasionally silently fails)
-- Wake printer from standby mode
-- fix margin methods
 - Improve 2D barcode implementation to include more than QR codes and support partitioned data input
-- Documentation
 
 
 ## License
