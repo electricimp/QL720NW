@@ -51,12 +51,21 @@ printer.setOrientation(QL720NW.PORTRAIT);
 ```
 
 ### setRightMargin(*column*)
-The *setRightMargin* method sets the right margin...
-doesn't appear to be working as expected
+The *setRightMargin* method sets the right margin. This method takes one required parameter *column*, an integer.  The position of the right margin is the character width times *column* from the left edge. See Margin Notes for more details.
 
 ### setLeftMargin(*column*)
-The *setLeftMargin* method sets the left margin...
-doesn't appear to be working as expected
+The *setLeftMargin* method sets the left margin.  This method takes one required parameter *column*, an integer.  The position of the left margin is the character width times *column* from the left edge.
+
+#####Margin Notes:
+
+![Margin Column Settings](./MarginFigure.png)
+
+######Cases when margin settings are ignored include:
+- left maring to the right of the right margin
+- difference between right and left margin less than one character
+- print media continuous length tape with no page length specified and orientation is landscape
+
+
 
 ### setFont(*font*)
 The *setFont* method sets the font using the *font* parameter.  See the table below for supported font class constants.
