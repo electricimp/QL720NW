@@ -204,20 +204,28 @@ barcodeConfig <- {"type" : QL720NW.BARCODE_CODE39,
 printer.writeBarcode(imp.getmacaddress(), barcodeConfig).print();
 ```
 
-### write2dBarcode(*data[, config]*)
-The *write2dBarcode* method creates a 2D QR barcode.  This method takes one required parameter *data*, and one optional parameter a table of configuation parameters.
+### write2dBarcode(*data, type[, config]*)
+The *write2dBarcode* method creates a 2D barcode.  This method takes two required parameters *data*, the data to be printed as a barcode, and *type*, the type of barcode to be printed.  Currently the supported 2D types are QR, selected by passing in the BARCODE_2D_QR class constant, and Data Matrix, selected by passing in the BARCODE_2D_DATAMATRIX class constant. This method also takes one optional parameter a table of configuation parameters. See the tables below for configuration details.
 
-#####Configuation Table
+##### QR Configuation Table
 | Config Table Key | Value Data type | Default Value | Description |
 | ----------------------- | ------------------------------------- | ---------- | --------------- |
 | *cell_size* | Cell Size Constant  | BARCODE_2D_CELL_SIZE_3 | Specifies the dot size per cell side. See chart below. |
-| *symbol_type* | Symbol Type Constant | BARCODE_2D_SYMBOL_MODEL_2 | Symbol type to be used. See chart below |
+| *symbol_type* | Symbol Type Constant | BARCODE_2D_QR_SYMBOL_MODEL_2 | Symbol type to be used. See chart below |
 | *structured_append_partitioned* | Boolean | false | Whether the structured append is partitioned. |
 | *code_number* | Integer | 0 | Indicates the number of the symbol in a partitioned QR Code. Must set a number between 1-16 if *structured_append_partitioned* is set to true. |
 | *num_partitions* | Integer | 0 | Indicates the total number of symbols in a partitioned QR Code. Must set a number between 2-16 if *structured_append_partitioned* is set to true. |
 | *parity_data* | hexadecimal | 0 | Value in bytes of exclusively OR'ing all the print data (print data before partition) |
-| *error_correction* | Error Correction Constant | BARCODE_2D_ERROR_CORRECTION_STANDARD | See chart below. |
-| *data_input_method* | Data Input Method Constant | BARCODE_2D_DATA_INPUT_AUTO | Auto: BARCODE_2D_DATA_INPUT_AUTO, Manual: BARCODE_2D_DATA_INPUT_MANUAL |
+| *error_correction* | Error Correction Constant | BARCODE_2D_QR_ERROR_CORRECTION_STANDARD | See chart below. |
+| *data_input_method* | Data Input Method Constant | BARCODE_2D_QR_DATA_INPUT_AUTO | Auto: BARCODE_2D_QR_DATA_INPUT_AUTO, Manual: BARCODE_2D_QR_DATA_INPUT_MANUAL |
+
+##### Data Matrix Configuation Table
+| Config Table Key | Value Data type | Default Value | Description |
+| ----------------------- | ------------------------------------- | ---------- | --------------- |
+| *cell_size* | Cell Size Constant  | BARCODE_2D_CELL_SIZE_3 | Specifies the dot size per cell side. See chart below. |
+| *symbol_type* | Symbol Type Constant | BARCODE_2D_DM_SYMBOL_SQUARE | Symbol type to be used. Square: BARCODE_2D_DM_SYMBOL_SQUARE, Rectangular: BARCODE_2D_DM_SYMBOL_RECTANGLE |
+| *vertical_size* | Vertical Size Constant  | BARCODE_2D_DM_VERTICAL_AUTO | Specifies the vertical number of cells. See chart below. |
+| *horizontal_size* | Horizontal Size Constant  | BARCODE_2D_DM_HORIZONTAL_AUTO | Specifies the horizontal number of cells. See chart below. |
 
 #####Cell Size
 | Cell Size Constant |
@@ -229,24 +237,65 @@ The *write2dBarcode* method creates a 2D QR barcode.  This method takes one requ
 | BARCODE_2D_CELL_SIZE_8 |
 | BARCODE_2D_CELL_SIZE_10 |
 
-#####Symbol Type
+#####QR Symbol Type
 | Symbol Type Constant |
 | ------------------------------- |
-| BARCODE_2D_SYMBOL_MODEL_1 |
-| BARCODE_2D_SYMBOL_MODEL_2 |
-| BARCODE_2D_SYMBOL_MICRO_QR |
+| BARCODE_2D_QR_SYMBOL_MODEL_1 |
+| BARCODE_2D_QR_SYMBOL_MODEL_2 |
+| BARCODE_2D_QR_SYMBOL_MICRO_QR |
 
-#####Error Correction
+#####QR Error Correction
 | Error Correction Constant | Level |
 | ---------------------------------- | ------- |
-| BARCODE_2D_ERROR_CORRECTION_HIGH_DENSITY | High-density level: L 7% |
-| BARCODE_2D_ERROR_CORRECTION_STANDARD | Standard level: M 15% |
-| BARCODE_2D_ERROR_CORRECTION_HIGH_RELIABILITY | High-reliability level: Q 25% |
-| BARCODE_2D_ERROR_CORRECTION_ULTRA_HIGH_RELIABILITY | Ultra-high-reliability level: H 30% |
+| BARCODE_2D_QR_ERROR_CORRECTION_HIGH_DENSITY | High-density level: L 7% |
+| BARCODE_2D_QR_ERROR_CORRECTION_STANDARD | Standard level: M 15% |
+| BARCODE_2D_QR_ERROR_CORRECTION_HIGH_RELIABILITY | High-reliability level: Q 25% |
+| BARCODE_2D_QR_ERROR_CORRECTION_ULTRA_HIGH_RELIABILITY | Ultra-high-reliability level: H 30% |
+
+#####Data Matrix Vertical Size
+| Vertical Size Constant | Supported Symbol Type |
+| ------------------------------ | -------------------------------- |
+| BARCODE_2D_DM_VERTICAL_AUTO | Square & Rectangular |
+| BARCODE_2D_DM_VERTICAL_8 | Rectangular |
+| BARCODE_2D_DM_VERTICAL_10 | Square |
+| BARCODE_2D_DM_VERTICAL_12 | Square & Rectangular |
+| BARCODE_2D_DM_VERTICAL_14 | Square |
+| BARCODE_2D_DM_VERTICAL_16 | Square & Rectangular |
+| BARCODE_2D_DM_VERTICAL_18 | Square |
+| BARCODE_2D_DM_VERTICAL_20 | Square |
+| BARCODE_2D_DM_VERTICAL_22 | Square |
+| BARCODE_2D_DM_VERTICAL_24 | Square |
+| BARCODE_2D_DM_VERTICAL_26 | Square |
+| BARCODE_2D_DM_VERTICAL_32 | Square |
+| BARCODE_2D_DM_VERTICAL_36 | Square |
+| BARCODE_2D_DM_VERTICAL_40 | Square |
+| BARCODE_2D_DM_VERTICAL_44 | Square |
+| BARCODE_2D_DM_VERTICAL_48 | Square |
+| BARCODE_2D_DM_VERTICAL_52 | Square |
+| BARCODE_2D_DM_VERTICAL_64 | Square |
+| BARCODE_2D_DM_VERTICAL_72 | Square |
+| BARCODE_2D_DM_VERTICAL_80 | Square |
+| BARCODE_2D_DM_VERTICAL_88 | Square |
+| BARCODE_2D_DM_VERTICAL_96 | Square |
+| BARCODE_2D_DM_VERTICAL_104 | Square |
+| BARCODE_2D_DM_VERTICAL_120 | Square |
+| BARCODE_2D_DM_VERTICAL_132 | Square |
+| BARCODE_2D_DM_VERTICAL_144 | Square |
+
+#####Data Matrix Horizontal Size
+| Horizontal Size Constant | Supported Symbol Type | Supported Vertical Cell Size |
+| ------------------------------ | -------------------------------- | ----------------------------- |
+| BARCODE_2D_DM_HORIZONTAL_X | Square | Same value as vertical size |
+| BARCODE_2D_DM_HORIZONTAL_AUTO | Rectangular | Auto |
+| BARCODE_2D_DM_HORIZONTAL_18 | Rectangular | 8 cells |
+| BARCODE_2D_DM_HORIZONTAL_32 | Rectangular | 8 cells |
+| BARCODE_2D_DM_HORIZONTAL_26 | Rectangular | 12 cells |
+| BARCODE_2D_DM_HORIZONTAL_36 | Rectangular | 12 cells or 16 cells |
+| BARCODE_2D_DM_HORIZONTAL_48 | Rectangular | 16 cells |
 
 ```squirrel
 // print QR code
-printer.write2dBarcode(imp.getmacaddress(), {
+printer.write2dBarcode(imp.getmacaddress(), QL720NW.BARCODE_2D_QR, {
     "cell_size": QL720NW.BARCODE_2D_CELL_SIZE_5,
 });
 
@@ -263,14 +312,6 @@ The *print* method prints the stored data set by the *write*, *writen*, *writeBa
 printer.write("Hello World").print();
 ```
 
-## To do
-
-- More extensive testing (printer occasionally silently fails)
-- Improve 2D barcode implementation to include more than QR codes and support partitioned data input
-
-
 ## License
 
 The QL720NW class is licensed under the [MIT License](./LICENSE).
-
-
