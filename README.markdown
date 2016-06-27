@@ -1,6 +1,6 @@
 #QL720NW
 
-This class provides device-side support for the [Brother QL720NW label printer](http://www.brother.co.uk/en/Labelling/QL-Printers/QL720NW)
+This class provides device-side support for the [Brother QL720NW label printer](http://www.brother.co.uk/en/Labelling/QL-Printers/QL720NW).
 
 **Important** This code is under development.  Please submit pull requests if you make improvements.
 
