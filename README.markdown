@@ -89,7 +89,7 @@ printer
 The *setFont()* method sets the font using the *font* parameter, which should be one of the constants listed below:
 
 | Font Constant |
-| ------------- |
+|: ------------- |
 | *FONT_BROUGHAM* |
 | *FONT_LETTER_GOTHIC_BOLD* |
 | *FONT_BRUSSELS* |
@@ -106,7 +106,7 @@ printer.setFont(QL720NW.FONT_HELSINKI);
 The *setFontSize()* method sets the font size using the *size* parameter, which should be one of the constants listed below:
 
 | Size Constant |
-| ------------- |
+|: ------------- |
 | *FONT_SIZE_24* |
 | *FONT_SIZE_32* |
 | *FONT_SIZE_48* |
@@ -195,7 +195,7 @@ The *writeBarcode()* method sets a barcode to be printed. This method takes one 
 #### Barcode Width
 
 | Barcode Width Constant |
-| ---------------------- |
+|: --------------------- |
 | *BARCODE_WIDTH_XXS* |
 | *BARCODE_WIDTH_XS* |
 | *BARCODE_WIDTH_S* |
@@ -205,7 +205,7 @@ The *writeBarcode()* method sets a barcode to be printed. This method takes one 
 #### Barcode Ratio
 
 | Barcode Ratio Constant |
-| ---------------------- |
+|: --------------------- |
 | *BARCODE_RATIO_2_1* |
 | *BARCODE_RATIO_25_1* |
 | *BARCODE_RATIO_3_1* |
@@ -243,7 +243,7 @@ The *write2dBarcode()* method creates a 2D QR barcode. This method takes one req
 #### Cell Size
 
 | Cell Size Constant |
-| ------------------ |
+|: ----------------- |
 | *BARCODE_2D_CELL_SIZE_3* |
 | *BARCODE_2D_CELL_SIZE_4* |
 | *BARCODE_2D_CELL_SIZE_5* |
@@ -254,7 +254,7 @@ The *write2dBarcode()* method creates a 2D QR barcode. This method takes one req
 #### Symbol Type
 
 | Symbol Type Constant |
-| -------------------- |
+|: ------------------- |
 | *BARCODE_2D_SYMBOL_MODEL_1* |
 | *BARCODE_2D_SYMBOL_MODEL_2* |
 | *BARCODE_2D_SYMBOL_MICRO_QR* |
