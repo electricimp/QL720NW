@@ -294,11 +294,16 @@ The *write2dBarcode* method creates a 2D barcode.  This method takes two require
 | BARCODE_2D_DM_HORIZONTAL_48 | Rectangular | 16 cells |
 
 ```squirrel
-// print QR code
-printer.write2dBarcode(imp.getmacaddress(), QL720NW.BARCODE_2D_QR, {
-    "cell_size": QL720NW.BARCODE_2D_CELL_SIZE_5,
-});
+mac <- imp.getmacaddress();
+qrSettings <- { "cell_size": QL720NW.BARCODE_2D_CELL_SIZE_5 };
+dataMatrixSettings <- { "cell_size" : QL720NW.BARCODE_2D_CELL_SIZE_8 };
 
+// write QR barcode
+printer.write2dBarcode(mac, QL720NW.BARCODE_2D_QR, qrSettings);
+// write dataMatrix barcode
+printer.write2dBarcode(mac, QL720NW.BARCODE_2D_DATAMATRIX, dataMatrixSettings);
+
+// print barcodes
 printer.print();
 ```
 
