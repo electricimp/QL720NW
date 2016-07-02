@@ -24,7 +24,6 @@ class QL720NW {
     static CMD_SET_FONT         = "\x1B\x6B";
 
     static CMD_BARCODE          = "\x1B\x69"
-    static CMD_2D_BARCODE       = "\x1B\x69"
 
     static LANDSCAPE            = "\x31";
     static PORTRAIT             = "\x30";
@@ -288,7 +287,7 @@ class QL720NW {
         if (type == BARCODE_2D_DATAMATRIX) { config = _setDMDefaults(config); }
 
         // Start the barcode
-        _buffer.writestring(CMD_2D_BARCODE);
+        _buffer.writestring(CMD_BARCODE);
         _buffer.writestring(config.type);
 
         // Set the parameters
