@@ -282,6 +282,7 @@ class QL720NW {
 
         // Convert height to dots
         local h = (config.height * 300).tointeger();
+
         // Set the height
         _buffer.writestring("h");               // Height marker
         _buffer.writen(h & 0xFF, 'b');          // Lower bit of height
@@ -315,7 +316,7 @@ class QL720NW {
                 config = _setDMDefaults(config);
                 break;
             default : 
-                throw "Barcode type not supported"
+                throw "Barcode type not supported";
         }
 
         // Start the barcode
@@ -325,6 +326,7 @@ class QL720NW {
         // Set the parameters
         _buffer.writestring(config.cell_size);
         _buffer.writestring(config.symbol_type);
+
         if (type == QL720NW_BARCODE_2D_QR) {
             _buffer.writestring(config.structured_append);
             _buffer.writestring(config.code_number);

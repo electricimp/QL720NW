@@ -20,6 +20,7 @@ printer
     .print();
 ```
 
+
 ### Constructor: QL720NW(*uart[, init]*)
 
 The QL720NW constructor takes one required parameter: a pre-configured *uart* and an optional boolean parameter: *init*.  By default *init* is set to true. When *init* is true the constructor will call the initialize method, which will run the setup commands to put the printer in ESC/P standard mode and initialize the printer defaults.
@@ -265,6 +266,7 @@ The *write2dBarcode* method creates a 2D barcode. This method takes two required
 | QL720NW_BARCODE_2D_SYMBOL_MODEL_2  |
 | QL720NW_BARCODE_2D_SYMBOL_MICRO_QR |
 
+
 ##### QR Error Correction
 
 | Error Correction Constant                                  | Level                               |
@@ -273,6 +275,7 @@ The *write2dBarcode* method creates a 2D barcode. This method takes two required
 | QL720NW_BARCODE_2D_ERROR_CORRECTION_STANDARD               | Standard level: M 15%               |
 | QL720NW_BARCODE_2D_ERROR_CORRECTION_HIGH_RELIABILITY       | High-reliability level: Q 25%       |
 | QL720NW_BARCODE_2D_ERROR_CORRECTION_ULTRA_HIGH_RELIABILITY | Ultra-high-reliability level: H 30% |
+
 
 ##### Data Matrix Vertical Size
 
