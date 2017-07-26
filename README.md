@@ -1,7 +1,6 @@
 # QL720NW
 
-Class for Brother Label Printer.
-This code is under development.  Please submit pull requests if you make improvements.
+Driver library for Brother Label Printer. User manual for printer can be found [here](./cv_ql720_eng_escp_100.pdf). 
 
 **To use this library add the following statement to the top of your device code:**
 
@@ -296,5 +295,3 @@ printer.write("Hello World").print();
 ## License
 
 The QL720NW class is licensed under the [MIT License](./LICENSE).
-
-
