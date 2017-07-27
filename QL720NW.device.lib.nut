@@ -286,15 +286,16 @@ class QL720NW {
         } else {
             config.charsBelowBarcode = (config.charsBelowBarcode) ? QL720NW_BARCODE_CHARS : QL720NW_BARCODE_NO_CHARS;
         }
+        local height = 0.5;
         if(!("height" in config)) { 
-            config.height <- _getBarcodeHeightCmd(0.5); 
+            height = _getBarcodeHeightCmd(height); 
         } else {
-            config.height = _getBarcodeHeightCmd(config.height);
+            height = _getBarcodeHeightCmd(config.height);
         }
         local endBarcode = (config.type == QL720NW_BARCODE_CODE128 || config.type == QL720NW_BARCODE_GS1_128 || config.type == QL720NW_BARCODE_CODE93) ? format("%s%s%s", QL720NW_BACKSLASH, QL720NW_BACKSLASH, QL720NW_BACKSLASH) : QL720NW_BACKSLASH;
 
         // Write barcode settings to buffer
-        _buffer.writestring(fromat("%s%s%s%s%s%s", QL720NW_CMD_BARCODE, config.type, config.charsBelowBarcode, config.width, config.height, config.ratio);
+        _buffer.writestring(format("%s%s%s%s%s%s", QL720NW_CMD_BARCODE, config.type, config.charsBelowBarcode, config.width, height, config.ratio));
 
         // Set data & end
         _buffer.writestring(format("%s%s%s", QL720NW_CMD_BARCODE_DATA, data, endBarcode))
@@ -308,17 +309,17 @@ class QL720NW {
         local barcodeParams = null;       
         switch (type) {
             case QL720NW_BARCODE_2D_QR :
-                barcodeParams = _setQRDefaults(config);
+                barcodeParams = _getQRParams(config);
                 break;
             case QL720NW_BARCODE_2D_DATAMATRIX : 
-                barcodeParams = _getQRParams(config);
+                barcodeParams = _getDMParams(config);
                 break;
             default : 
                 throw ERROR_2D_BARCODE_NOT_SUPPORTED;
         }
 
         // Write the barcode
-        _buffer.writestring(format("%s%s%s%s%s%s%s%s", QL720NW_CMD_2D_BARCODE, type, config.cell_size, barcodeParams, data, QL720NW_BACKSLASH, QL720NW_BACKSLASH, QL720NW_BACKSLASH);
+        _buffer.writestring(format("%s%s%s%s%s%s%s%s", QL720NW_CMD_2D_BARCODE, type, config.cell_size, barcodeParams, data, QL720NW_BACKSLASH, QL720NW_BACKSLASH, QL720NW_BACKSLASH));
 
         return this;
     }
@@ -346,9 +347,9 @@ class QL720NW {
         // Configure settings for structure append partitioned or not partitioned
         if (!("structured_append_partitioned" in config) || !config.structured_append_partitioned) { 
             config.structured_append <- QL720NW_BARCODE_2D_QR_STRUCTURE_NOT_PARTITIONED;
-            config.code_number = 0;
-            config.num_partitions = 0;
-            config.parity_data = 0;
+            config.code_number <- 0;
+            config.num_partitions <- 0;
+            config.parity_data <- 0;
         } else {
             config.structured_append <- QL720NW_BARCODE_2D_QR_STRUCTURE_PARTITIONED;
             if (!("code_number" in config) || config.code_number < 1 || config.code_number > 16) { throw ERROR_INVALID_CODE_NUMBER; }
@@ -361,14 +362,14 @@ class QL720NW {
 
     function _getBarcodeHeightCmd(height) {
         // Convert height (in inches) to dots
-        (height * DOTS_PER_INCH).tointeger();
+        height = (height * DOTS_PER_INCH).tointeger();
         // Height marker command "h", height lower bit, height upper bit
         return format("h%c%c", height & 0xFF, (height >> 8) & 0xFF);
     }
 
     function _setMargin(command, margin) {
         local marginBuffer = blob();
-        marginBuffer.writestring(format("%s%c", command, margin & 0xFF);
+        marginBuffer.writestring(format("%s%c", command, margin & 0xFF));
         _uart.write(marginBuffer);
 
         return this;
