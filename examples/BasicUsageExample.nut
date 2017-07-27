@@ -22,7 +22,7 @@
 // ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
 
-#require "QL720NW.device.lib.nut:0.1.0"
+#require "QL720NW.device.lib.nut:0.2.0"
 
 // Configure UART
 uart <- hardware.uart12;
@@ -95,6 +95,6 @@ qrBarcodeSettings <- { "cell_size": QL720NW_BARCODE_2D_CELL_SIZE_5,
                        "error_correction": QL720NW_BARCODE_2D_ERROR_CORRECTION_STANDARD,
                        "data_input_method": QL720NW_BARCODE_2D_DATA_INPUT_AUTO };
 
-printer.write2dBarcode(imp.getmacaddress(), qrBarcodeSettings).print();
+printer.write2dBarcode(imp.getmacaddress(), QL720NW_BARCODE_2D_QR, qrBarcodeSettings).print();
 
 server.log("Done");

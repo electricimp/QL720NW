@@ -5,7 +5,7 @@ Driver library for Brother Label Printer. User manual for printer can be found [
 **To use this library add the following statement to the top of your device code:**
 
 ```squirrel
-#require "QL720NW.device.lib.nut:0.1.0"
+#require "QL720NW.device.lib.nut:0.2.0"
 ```
 
 ## Class Usage
@@ -20,7 +20,8 @@ printer
     .print();
 ```
 
-### Constructor: QL720NW(*uart[, init ]*)
+
+### Constructor: QL720NW(*uart[, init]*)
 
 The QL720NW constructor takes one required parameter: a pre-configured *uart* and an optional boolean parameter: *init*.  By default *init* is set to true. When *init* is true the constructor will call the initialize method, which will run the setup commands to put the printer in ESC/P standard mode and initialize the printer defaults.
 
@@ -221,11 +222,11 @@ barcodeConfig <- {"type" : QL720NW_BARCODE_CODE39,
 printer.writeBarcode(imp.getmacaddress(), barcodeConfig).print();
 ```
 
-### write2dBarcode(*data[, config]*)
+### write2dBarcode(*data, type[, config]*)
 
-The *write2dBarcode* method creates a 2D QR barcode.  This method takes one required parameter *data*, and one optional parameter a table of configuation parameters.
+The *write2dBarcode* method creates a 2D barcode. This method takes two required parameters *data*, the data to be printed as a barcode, and *type*, the type of barcode to be printed.  Currently the supported 2D types are QR, selected by passing in the QL720NW_BARCODE_2D_QR class constant, and Data Matrix, selected by passing in the QL720NW_BARCODE_2D_DATAMATRIX constants. This method also takes one optional parameter a table of configuation parameters. See the tables below for configuration details.
 
-##### Configuation Table
+##### QR Configuation Table
 
 | Config Table Key                | Value Data type            | Default Value                                | Description     |
 | ------------------------------- | -------------------------- | -------------------------------------------- | --------------- |
@@ -238,6 +239,14 @@ The *write2dBarcode* method creates a 2D QR barcode.  This method takes one requ
 | *error_correction*              | Error Correction Constant  | QL720NW_BARCODE_2D_ERROR_CORRECTION_STANDARD | See chart below. |
 | *data_input_method*             | Data Input Method Constant | QL720NW_BARCODE_2D_DATA_INPUT_AUTO           | Auto: QL720NW_BARCODE_2D_DATA_INPUT_AUTO, Manual: QL720NW_BARCODE_2D_DATA_INPUT_MANUAL |
 
+##### Data Matrix Configuation Table
+| Config Table Key  | Value Data type           | Default Value                 | Description     |
+| ----------------- | ------------------------- | ----------------------------- | --------------- |
+| *cell_size*       | Cell Size Constant        | QL720NW_BARCODE_2D_CELL_SIZE_3        | Specifies the dot size per cell side. See chart below. |
+| *symbol_type*     | Symbol Type Constant      | QL720NW_BARCODE_2D_DM_SYMBOL_SQUARE   | Symbol type to be used. Square: QL720NW_BARCODE_2D_DM_SYMBOL_SQUARE, Rectangular: QL720NW_BARCODE_2D_DM_SYMBOL_RECTANGLE |
+| *vertical_size*   | Vertical Size Constant    | QL720NW_BARCODE_2D_DM_VERTICAL_AUTO   | Specifies the vertical number of cells. See chart below. |
+| *horizontal_size* | Horizontal Size Constant  | QL720NW_BARCODE_2D_DM_HORIZONTAL_AUTO | Specifies the horizontal number of cells. See chart below. |
+
 ##### Cell Size
 
 | Cell Size Constant              |
@@ -249,7 +258,7 @@ The *write2dBarcode* method creates a 2D QR barcode.  This method takes one requ
 | QL720NW_BARCODE_2D_CELL_SIZE_8  |
 | QL720NW_BARCODE_2D_CELL_SIZE_10 |
 
-##### Symbol Type
+##### QR Symbol Type
 
 | Symbol Type Constant               |
 | ---------------------------------- |
@@ -257,7 +266,8 @@ The *write2dBarcode* method creates a 2D QR barcode.  This method takes one requ
 | QL720NW_BARCODE_2D_SYMBOL_MODEL_2  |
 | QL720NW_BARCODE_2D_SYMBOL_MICRO_QR |
 
-##### Error Correction
+
+##### QR Error Correction
 
 | Error Correction Constant                                  | Level                               |
 | ---------------------------------------------------------- | ----------------------------------- |
@@ -266,12 +276,61 @@ The *write2dBarcode* method creates a 2D QR barcode.  This method takes one requ
 | QL720NW_BARCODE_2D_ERROR_CORRECTION_HIGH_RELIABILITY       | High-reliability level: Q 25%       |
 | QL720NW_BARCODE_2D_ERROR_CORRECTION_ULTRA_HIGH_RELIABILITY | Ultra-high-reliability level: H 30% |
 
-```squirrel
-// print QR code
-printer.write2dBarcode(imp.getmacaddress(), {
-    "cell_size": QL720NW_BARCODE_2D_CELL_SIZE_5,
-});
 
+##### Data Matrix Vertical Size
+
+| Vertical Size Constant              | Supported Symbol Type |
+| ----------------------------------- | ----------------------|
+| QL720NW_BARCODE_2D_DM_VERTICAL_AUTO | Square & Rectangular  |
+| QL720NW_BARCODE_2D_DM_VERTICAL_8    | Rectangular           |
+| QL720NW_BARCODE_2D_DM_VERTICAL_10   | Square                |
+| QL720NW_BARCODE_2D_DM_VERTICAL_12   | Square & Rectangular  |
+| QL720NW_BARCODE_2D_DM_VERTICAL_14   | Square                |
+| QL720NW_BARCODE_2D_DM_VERTICAL_16   | Square & Rectangular  |
+| QL720NW_BARCODE_2D_DM_VERTICAL_18   | Square                |
+| QL720NW_BARCODE_2D_DM_VERTICAL_20   | Square                |
+| QL720NW_BARCODE_2D_DM_VERTICAL_22   | Square                |
+| QL720NW_BARCODE_2D_DM_VERTICAL_24   | Square                |
+| QL720NW_BARCODE_2D_DM_VERTICAL_26   | Square                |
+| QL720NW_BARCODE_2D_DM_VERTICAL_32   | Square                |
+| QL720NW_BARCODE_2D_DM_VERTICAL_36   | Square                |
+| QL720NW_BARCODE_2D_DM_VERTICAL_40   | Square                |
+| QL720NW_BARCODE_2D_DM_VERTICAL_44   | Square                |
+| QL720NW_BARCODE_2D_DM_VERTICAL_48   | Square                |
+| QL720NW_BARCODE_2D_DM_VERTICAL_52   | Square                |
+| QL720NW_BARCODE_2D_DM_VERTICAL_64   | Square                |
+| QL720NW_BARCODE_2D_DM_VERTICAL_72   | Square                |
+| QL720NW_BARCODE_2D_DM_VERTICAL_80   | Square                |
+| QL720NW_BARCODE_2D_DM_VERTICAL_88   | Square                |
+| QL720NW_BARCODE_2D_DM_VERTICAL_96   | Square                |
+| QL720NW_BARCODE_2D_DM_VERTICAL_104  | Square                |
+| QL720NW_BARCODE_2D_DM_VERTICAL_120  | Square                |
+| QL720NW_BARCODE_2D_DM_VERTICAL_132  | Square                |
+| QL720NW_BARCODE_2D_DM_VERTICAL_144  | Square                |
+
+##### Data Matrix Horizontal Size
+
+| Horizontal Size Constant              | Supported Symbol Type | Supported Vertical Cell Size |
+| ------------------------------------- | --------------------- | ---------------------------- |
+| QL720NW_BARCODE_2D_DM_HORIZONTAL_X    | Square                | Same value as vertical size  |
+| QL720NW_BARCODE_2D_DM_HORIZONTAL_AUTO | Rectangular           | Auto                         |
+| QL720NW_BARCODE_2D_DM_HORIZONTAL_18   | Rectangular           | 8 cells                      |
+| QL720NW_BARCODE_2D_DM_HORIZONTAL_32   | Rectangular           | 8 cells                      |
+| QL720NW_BARCODE_2D_DM_HORIZONTAL_26   | Rectangular           | 12 cells                     |
+| QL720NW_BARCODE_2D_DM_HORIZONTAL_36   | Rectangular           | 12 cells or 16 cells         |
+| QL720NW_BARCODE_2D_DM_HORIZONTAL_48   | Rectangular           | 16 cells                     |
+
+```squirrel
+mac <- imp.getmacaddress();
+qrSettings <- { "cell_size": QL720NW_BARCODE_2D_CELL_SIZE_5 };
+dataMatrixSettings <- { "cell_size" : QL720NW_BARCODE_2D_CELL_SIZE_8 };
+
+// write QR barcode
+printer.write2dBarcode(mac, QL720NW_BARCODE_2D_QR, qrSettings);
+// write dataMatrix barcode
+printer.write2dBarcode(mac, QL720NW_BARCODE_2D_DATAMATRIX, dataMatrixSettings);
+
+// print barcodes
 printer.print();
 ```
 
@@ -289,7 +348,7 @@ printer.write("Hello World").print();
 ## To do
 
 - More extensive testing (printer occasionally silently fails)
-- Improve 2D barcode implementation to include more than QR codes and support partitioned data input
+- Improve 2D barcode implementation
 
 
 ## License
