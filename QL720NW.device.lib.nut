@@ -162,7 +162,7 @@ const QL720NW_BARCODE_2D_DM_RESERVED            = "\x00\x00\x00\x00\x00";
 
 class QL720NW {
 
-    static VERSION = "0.1.0";
+    static VERSION = "0.2.0";
 
     _uart = null;   // A preconfigured UART
     _buffer = null; // buffer for building text
@@ -282,7 +282,8 @@ class QL720NW {
         _buffer.writestring(config.width);
 
         // Convert height to dots
-        local h = (config.height*300).tointeger();
+        local h = (config.height * 300).tointeger();
+
         // Set the height
         _buffer.writestring("h");               // Height marker
         _buffer.writen(h & 0xFF, 'b');          // Lower bit of height
@@ -305,42 +306,42 @@ class QL720NW {
         return this;
     }
 
-    function write2dBarcode(data, config = {}) {
+    function write2dBarcode(data, type, config = {}) {
         // Set defaults
-        if (!("cell_size" in config)) { config.cell_size <- QL720NW_BARCODE_2D_CELL_SIZE_3; }
-        if (!("symbol_type" in config)) { config.symbol_type <- QL720NW_BARCODE_2D_QR_SYMBOL_MODEL_2; }
-        if (!("structured_append_partitioned" in config)) { config.structured_append_partitioned <- false; }
-        if (!("code_number" in config)) { config.code_number <- 0; }
-        if (!("num_partitions" in config)) { config.num_partitions <- 0; }
-
-        if (!("parity_data" in config)) { config["parity_data"] <- 0; }
-        if (!("error_correction" in config)) { config["error_correction"] <- QL720NW_BARCODE_2D_QR_ERROR_CORRECTION_STANDARD; }
-        if (!("data_input_method" in config)) { config["data_input_method"] <- QL720NW_BARCODE_2D_QR_DATA_INPUT_AUTO; }
-
-        // Check ranges
-        if (config.structured_append_partitioned) {
-            config.structured_append <- QL720NW_BARCODE_2D_QR_STRUCTURE_PARTITIONED;
-            if (config.code_number < 1 || config.code_number > 16) throw "Unknown code number";
-            if (config.num_partitions < 2 || config.num_partitions > 16) throw "Unknown number of partitions";
-        } else {
-            config.structured_append <- QL720NW_BARCODE_2D_QR_STRUCTURE_NOT_PARTITIONED;
-            config.code_number = "\x00";
-            config.num_partitions = "\x00";
-            config.parity_data = "\x00";
+        if (!("cell_size" in config)) { config.cell_size <- QL720NW_BARCODE_2D_CELL_SIZE_3; }        
+        switch (type) {
+            case QL720NW_BARCODE_2D_QR :
+                config = _setQRDefaults(config);
+                break;
+            case QL720NW_BARCODE_2D_DATAMATRIX : 
+                config = _setDMDefaults(config);
+                break;
+            default : 
+                throw "Barcode type not supported";
         }
 
         // Start the barcode
         _buffer.writestring(QL720NW_CMD_2D_BARCODE);
+        _buffer.writestring(config.type);
 
         // Set the parameters
         _buffer.writestring(config.cell_size);
         _buffer.writestring(config.symbol_type);
-        _buffer.writestring(config.structured_append);
-        _buffer.writestring(config.code_number);
-        _buffer.writestring(config.num_partitions);
-        _buffer.writestring(config.parity_data);
-        _buffer.writestring(config.error_correction);
-        _buffer.writestring(config.data_input_method);
+
+        if (type == QL720NW_BARCODE_2D_QR) {
+            _buffer.writestring(config.structured_append);
+            _buffer.writestring(config.code_number);
+            _buffer.writestring(config.num_partitions);
+            _buffer.writestring(config.parity_data);
+            _buffer.writestring(config.error_correction);
+            _buffer.writestring(config.data_input_method);
+        }
+
+        if (type == QL720NW_BARCODE_2D_DATAMATRIX) {
+            _buffer.writestring(config.vertical_size);
+            _buffer.writestring(config.horizontal_size);
+            _buffer.writestring(QL720NW_BARCODE_2D_DM_RESERVED);
+        }
 
         // Write data
         _buffer.writestring(data);
@@ -356,6 +357,38 @@ class QL720NW {
         _buffer.writestring(QL720NW_PAGE_FEED);
         _uart.write(_buffer);
         _buffer = blob();
+    }
+
+    function _setDMDefaults(config) {
+        config.type <- QL720NW_BARCODE_2D_DATAMATRIX;
+        if (!("symbol_type" in config)) { config.symbol_type <- QL720NW_BARCODE_2D_DM_SYMBOL_SQUARE; }
+        if (!("vertical_size" in config)) { config.vertical_size <- QL720NW_BARCODE_2D_DM_VERTICAL_AUTO; }
+        if (!("horizontal_size" in config)) { config.horizontal_size <- QL720NW_BARCODE_2D_DM_HORIZONTAL_AUTO; }
+        return config;
+    }
+
+    function _setQRDefaults(config) {
+        config.type <- QL720NW_BARCODE_2D_QR;
+        if (!("symbol_type" in config)) { config.symbol_type <- QL720NW_BARCODE_2D_QR_SYMBOL_MODEL_2; }
+        if (!("structured_append_partitioned" in config)) { config.structured_append_partitioned <- false; }
+        if (!("code_number" in config)) { config.code_number <- 0; }
+        if (!("num_partitions" in config)) { config.num_partitions <- 0; }
+        if (!("parity_data" in config)) { config["parity_data"] <- 0; }
+        if (!("error_correction" in config)) { config["error_correction"] <- QL720NW_BARCODE_2D_QR_ERROR_CORRECTION_STANDARD; }
+        if (!("data_input_method" in config)) { config["data_input_method"] <- QL720NW_BARCODE_2D_QR_DATA_INPUT_AUTO; }
+
+        // Check ranges
+        if (config.structured_append_partitioned) {
+            config.structured_append <- QL720NW_BARCODE_2D_QR_STRUCTURE_PARTITIONED;
+            if (config.code_number < 1 || config.code_number > 16) throw "Unknown code number";
+            if (config.num_partitions < 2 || config.num_partitions > 16) throw "Unknown number of partitions";
+        } else {
+            config.structured_append <- QL720NW_BARCODE_2D_QR_STRUCTURE_NOT_PARTITIONED;
+            config.code_number = "\x00";
+            config.num_partitions = "\x00";
+            config.parity_data = "\x00";
+        }
+        return config;
     }
 
     function _setMargin(command, margin) {
