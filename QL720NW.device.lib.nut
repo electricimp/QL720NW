@@ -93,6 +93,9 @@ const QL720NW_BARCODE_RATIO_25_1    = "z1";
 const QL720NW_BARCODE_RATIO_3_1     = "z2";
 
 // 2D Barcode Parameters
+const QL720NW_BARCODE_2D_QR            = "\x71";
+const QL720NW_BARCODE_2D_DATAMATRIX    = "\x64";
+
 const QL720NW_BARCODE_2D_CELL_SIZE_3   = "\x03";
 const QL720NW_BARCODE_2D_CELL_SIZE_4   = "\x04";
 const QL720NW_BARCODE_2D_CELL_SIZE_5   = "\x05";
@@ -100,21 +103,62 @@ const QL720NW_BARCODE_2D_CELL_SIZE_6   = "\x06";
 const QL720NW_BARCODE_2D_CELL_SIZE_8   = "\x08";
 const QL720NW_BARCODE_2D_CELL_SIZE_10  = "\x0A";
 
-const QL720NW_BARCODE_2D_SYMBOL_MODEL_1    = "\x01";
-const QL720NW_BARCODE_2D_SYMBOL_MODEL_2    = "\x02";
-const QL720NW_BARCODE_2D_SYMBOL_MICRO_QR   = "\x03";
+// 2D QR Barcode Parameters
+const QL720NW_BARCODE_2D_QR_SYMBOL_MODEL_1    = "\x01";
+const QL720NW_BARCODE_2D_QR_SYMBOL_MODEL_2    = "\x02";
+const QL720NW_BARCODE_2D_QR_SYMBOL_MICRO_QR   = "\x03";
 
-const QL720NW_BARCODE_2D_STRUCTURE_NOT_PARTITIONED = "\x00";
-const QL720NW_BARCODE_2D_STRUCTURE_PARTITIONED     = "\x01";
+const QL720NW_BARCODE_2D_QR_STRUCTURE_NOT_PARTITIONED = "\x00";
+const QL720NW_BARCODE_2D_QR_STRUCTURE_PARTITIONED     = "\x01";
 
-const QL720NW_BARCODE_2D_ERROR_CORRECTION_HIGH_DENSITY             = "\x01";
-const QL720NW_BARCODE_2D_ERROR_CORRECTION_STANDARD                 = "\x02";
-const QL720NW_BARCODE_2D_ERROR_CORRECTION_HIGH_RELIABILITY         = "\x03";
-const QL720NW_BARCODE_2D_ERROR_CORRECTION_ULTRA_HIGH_RELIABILITY   = "\x04";
+const QL720NW_BARCODE_2D_QR_ERROR_CORRECTION_HIGH_DENSITY             = "\x01";
+const QL720NW_BARCODE_2D_QR_ERROR_CORRECTION_STANDARD                 = "\x02";
+const QL720NW_BARCODE_2D_QR_ERROR_CORRECTION_HIGH_RELIABILITY         = "\x03";
+const QL720NW_BARCODE_2D_QR_ERROR_CORRECTION_ULTRA_HIGH_RELIABILITY   = "\x04";
 
-const QL720NW_BARCODE_2D_DATA_INPUT_AUTO   = "\x00";
-const QL720NW_BARCODE_2D_DATA_INPUT_MANUAL = "\x01";
+const QL720NW_BARCODE_2D_QR_DATA_INPUT_AUTO   = "\x00";
+const QL720NW_BARCODE_2D_QR_DATA_INPUT_MANUAL = "\x01";
 
+// 2D DataMatrix Barcode Parameters
+const QL720NW_BARCODE_2D_DM_SYMBOL_SQUARE       = "\x00";
+const QL720NW_BARCODE_2D_DM_SYMBOL_RECTANGLE    = "\x01";
+
+const QL720NW_BARCODE_2D_DM_VERTICAL_AUTO       = "\x00";
+const QL720NW_BARCODE_2D_DM_VERTICAL_8          = "\x08";
+const QL720NW_BARCODE_2D_DM_VERTICAL_10         = "\x0A";
+const QL720NW_BARCODE_2D_DM_VERTICAL_12         = "\x0C";
+const QL720NW_BARCODE_2D_DM_VERTICAL_14         = "\x0E";
+const QL720NW_BARCODE_2D_DM_VERTICAL_16         = "\x10";
+const QL720NW_BARCODE_2D_DM_VERTICAL_18         = "\x12";
+const QL720NW_BARCODE_2D_DM_VERTICAL_20         = "\x14";
+const QL720NW_BARCODE_2D_DM_VERTICAL_22         = "\x16";
+const QL720NW_BARCODE_2D_DM_VERTICAL_24         = "\x18";
+const QL720NW_BARCODE_2D_DM_VERTICAL_26         = "\x1A";
+const QL720NW_BARCODE_2D_DM_VERTICAL_32         = "\x20";
+const QL720NW_BARCODE_2D_DM_VERTICAL_36         = "\x24";
+const QL720NW_BARCODE_2D_DM_VERTICAL_40         = "\x28";
+const QL720NW_BARCODE_2D_DM_VERTICAL_44         = "\x2C";
+const QL720NW_BARCODE_2D_DM_VERTICAL_48         = "\x30";
+const QL720NW_BARCODE_2D_DM_VERTICAL_52         = "\x34";
+const QL720NW_BARCODE_2D_DM_VERTICAL_64         = "\x40";
+const QL720NW_BARCODE_2D_DM_VERTICAL_72         = "\x48";
+const QL720NW_BARCODE_2D_DM_VERTICAL_80         = "\x50";
+const QL720NW_BARCODE_2D_DM_VERTICAL_88         = "\x58";
+const QL720NW_BARCODE_2D_DM_VERTICAL_96         = "\x60";
+const QL720NW_BARCODE_2D_DM_VERTICAL_104        = "\x68";
+const QL720NW_BARCODE_2D_DM_VERTICAL_120        = "\x78";
+const QL720NW_BARCODE_2D_DM_VERTICAL_132        = "\x84";
+const QL720NW_BARCODE_2D_DM_VERTICAL_144        = "\x90";
+
+const QL720NW_BARCODE_2D_DM_HORIZONTAL_X        = "x";
+const QL720NW_BARCODE_2D_DM_HORIZONTAL_AUTO     = "\x00";
+const QL720NW_BARCODE_2D_DM_HORIZONTAL_18       = "\x12";
+const QL720NW_BARCODE_2D_DM_HORIZONTAL_26       = "\x1A";
+const QL720NW_BARCODE_2D_DM_HORIZONTAL_32       = "\x20";
+const QL720NW_BARCODE_2D_DM_HORIZONTAL_36       = "\x24";
+const QL720NW_BARCODE_2D_DM_HORIZONTAL_48       = "\x30";
+
+const QL720NW_BARCODE_2D_DM_RESERVED            = "\x00\x00\x00\x00\x00";
 
 class QL720NW {
 
@@ -153,7 +197,7 @@ class QL720NW {
     }
 
     function setRightMargin(column) {
-        return _setMargin(CQL720NW_MD_SET_RIGHT_MARGIN, column);
+        return _setMargin(QL720NW_CMD_SET_RIGHT_MARGIN, column);
     }
 
     function setLeftMargin(column) {
@@ -264,22 +308,22 @@ class QL720NW {
     function write2dBarcode(data, config = {}) {
         // Set defaults
         if (!("cell_size" in config)) { config.cell_size <- QL720NW_BARCODE_2D_CELL_SIZE_3; }
-        if (!("symbol_type" in config)) { config.symbol_type <- QL720NW_BARCODE_2D_SYMBOL_MODEL_2; }
+        if (!("symbol_type" in config)) { config.symbol_type <- QL720NW_BARCODE_2D_QR_SYMBOL_MODEL_2; }
         if (!("structured_append_partitioned" in config)) { config.structured_append_partitioned <- false; }
         if (!("code_number" in config)) { config.code_number <- 0; }
         if (!("num_partitions" in config)) { config.num_partitions <- 0; }
 
         if (!("parity_data" in config)) { config["parity_data"] <- 0; }
-        if (!("error_correction" in config)) { config["error_correction"] <- QL720NW_BARCODE_2D_ERROR_CORRECTION_STANDARD; }
-        if (!("data_input_method" in config)) { config["data_input_method"] <- QL720NW_BARCODE_2D_DATA_INPUT_AUTO; }
+        if (!("error_correction" in config)) { config["error_correction"] <- QL720NW_BARCODE_2D_QR_ERROR_CORRECTION_STANDARD; }
+        if (!("data_input_method" in config)) { config["data_input_method"] <- QL720NW_BARCODE_2D_QR_DATA_INPUT_AUTO; }
 
         // Check ranges
         if (config.structured_append_partitioned) {
-            config.structured_append <- QL720NW_BARCODE_2D_STRUCTURE_PARTITIONED;
+            config.structured_append <- QL720NW_BARCODE_2D_QR_STRUCTURE_PARTITIONED;
             if (config.code_number < 1 || config.code_number > 16) throw "Unknown code number";
             if (config.num_partitions < 2 || config.num_partitions > 16) throw "Unknown number of partitions";
         } else {
-            config.structured_append <- QL720NW_BARCODE_2D_STRUCTURE_NOT_PARTITIONED;
+            config.structured_append <- QL720NW_BARCODE_2D_QR_STRUCTURE_NOT_PARTITIONED;
             config.code_number = "\x00";
             config.num_partitions = "\x00";
             config.parity_data = "\x00";
