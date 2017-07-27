@@ -380,8 +380,8 @@ class QL720NW {
         // Check ranges
         if (config.structured_append_partitioned) {
             config.structured_append <- QL720NW_BARCODE_2D_QR_STRUCTURE_PARTITIONED;
-            if (config.code_number < 1 || config.code_number > 16) throw "Unknown code number";
-            if (config.num_partitions < 2 || config.num_partitions > 16) throw "Unknown number of partitions";
+            if (config.code_number < 1 || config.code_number > 16) throw "Invalid code number";
+            if (config.num_partitions < 2 || config.num_partitions > 16) throw "Invalid number of partitions";
         } else {
             config.structured_append <- QL720NW_BARCODE_2D_QR_STRUCTURE_NOT_PARTITIONED;
             config.code_number = "\x00";
