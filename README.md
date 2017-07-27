@@ -169,11 +169,11 @@ The *writeBarcode()* method specifies a barcode to be printed. It has one requir
 
 | Config Table Key     | Value Data type         | Default Value             | Description     |
 | -------------------- | ----------------------- | ------------------------- | --------------- |
-| *type*               | Barcode Type Constant   | QL720NW_BARCODE_CODE39    | Type of barcode to print. See chart below |
+| *type*               | Barcode Type Constant   | QL720NW_BARCODE_CODE39    | Type of barcode to print. See table below |
 | *charsBelowBarcode*  | Boolean                 | `true `                   | Whether to print data below the barcode |
-| *width*              | Barcode Width Constant  | QL720NW_BARCODE_WIDTH_XS  | Width of barcode. See chart below |
+| *width*              | Barcode Width Constant  | QL720NW_BARCODE_WIDTH_XS  | Width of barcode. See table below |
 | *height*             | Float                   | 0.5                       | Height of barcode in inches |
-| *ratio*              | Barcode Ratio Constants | QL720NW_BARCODE_RATIO_2_1 | Ratio between thick and thin bars. Setting available only for type *QL720NW_BARCODE_CODE39*, *QL720NW_BARCODE_ITF* or *QL720NW_BARCODE_CODABAR*. See chart below |
+| *ratio*              | Barcode Ratio Constants | QL720NW_BARCODE_RATIO_2_1 | Ratio between thick and thin bars. Setting available only for type *QL720NW_BARCODE_CODE39*, *QL720NW_BARCODE_ITF* or *QL720NW_BARCODE_CODABAR*. See table below |
 
 #### Barcode Type
 
@@ -238,7 +238,7 @@ The *write2dBarcode()* method creates a 2D barcode. This method takes two requir
 | *code_number*                   | Integer                    | 0                                            | Indicates the number of the symbol in a partitioned QR Code. Must set a number between 1-16 if *structured_append_partitioned* is set to `true` |
 | *num_partitions*                | Integer                    | 0                                            | Indicates the total number of symbols in a partitioned QR Code. Must set a number between 2-16 if *structured_append_partitioned* is set to `true` |
 | *parity_data*                   | hexadecimal                | 0                                            | Value in bytes of exclusively OR-ing all the print data (print data before partition) |
-| *error_correction*              | Error Correction Constant  | *QL720NW_BARCODE_2D_ERROR_CORRECTION_STANDARD* | See chart below |
+| *error_correction*              | Error Correction Constant  | *QL720NW_BARCODE_2D_ERROR_CORRECTION_STANDARD* | See table below |
 | *data_input_method*             | Data Input Method Constant | *QL720NW_BARCODE_2D_DATA_INPUT_AUTO*           | Auto: *QL720NW_BARCODE_2D_DATA_INPUT_AUTO*,<br>Manual: *QL720NW_BARCODE_2D_DATA_INPUT_MANUAL* |
 
 #### Data Matrix Configuration Table
