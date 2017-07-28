@@ -185,7 +185,7 @@ const ERROR_INVALID_NUMBER_OF_PARTITIONS = "Number of partitions must be between
 
 class QL720NW {
 
-    static VERSION = "0.2.0";
+    static VERSION = "0.3.0";
 
     _uart = null;   // A preconfigured UART
     _buffer = null; // buffer for building text
@@ -389,6 +389,8 @@ class QL720NW {
     }
 
     function _getBarcodeHeightCmd(height) {
+        // set to defualt height if non-numeric height was passed in
+        if (typeof height != "integer" || typeof height != "float") height = QL720NW_DEFAULT_HEIGHT; 
         // Convert height (in inches) to dots
         height = (height * QL720NW_DOTS_PER_INCH).tointeger();
         // Height marker command "h", height lower bit, height upper bit

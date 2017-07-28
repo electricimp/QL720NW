@@ -5,7 +5,7 @@ This is a driver library for the Brother Label Printer. The printer’s user man
 **To use this library, add the following statement to the top of your device code:**
 
 ```squirrel
-#require "QL720NW.device.lib.nut:0.2.0"
+#require "QL720NW.device.lib.nut:0.3.0"
 ```
 
 ## Class Usage

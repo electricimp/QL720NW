@@ -22,7 +22,7 @@
 // ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
 
-#require "QL720NW.device.lib.nut:0.2.0"
+#require "QL720NW.device.lib.nut:0.3.0"
 
 // Configure UART
 uart <- hardware.uart12;
