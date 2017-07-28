@@ -88,7 +88,7 @@ printer
 
 ### setFont(*font*)
 
-The *setFont()* method sets the font using the *font* parameter. The table below lists the supported font name constants.
+The *setFont()* method sets the font using the *font* parameter. The table below lists the supported font name constants. 
 
 | Font Constant |
 | --- |
@@ -97,6 +97,8 @@ The *setFont()* method sets the font using the *font* parameter. The table below
 | *QL720NW_FONT_BRUSSELS* |
 | *QL720NW_FONT_HELSINKI* |
 | *QL720NW_FONT_SAN_DIEGO* |
+
+**Note:** *setFont()* settings are stored to the print buffer, so these settings are cleared whenever the *print()* method is called.
 
 ```squirrel
 // Set font to Helsinki
@@ -113,6 +115,8 @@ The *setFontSize()* method sets the font size (in points) using the *size* param
 | *QL720NW_FONT_SIZE_32* |
 | *QL720NW_FONT_SIZE_48* |
 
+**Note:** *setFontSize()* settings are stored to the print buffer, so these settings are cleared whenever the *print()* method is called.
+
 ```squirrel
 // Set font size to 32
 printer.setFont(QL720NW_FONT_SIZE_32);
@@ -122,7 +126,7 @@ printer.setFont(QL720NW_FONT_SIZE_32);
 
 The *write()* method sets the text to be printed. It takes one required parameter, *text*, which is a string containing the text to be printed. It also has one optional parameter, *options*. By default no options are set. Options are selected by OR-ing the class constants *QL720NW_ITALIC*, *QL720NW_BOLD* and *QL720NW_UNDERLINE*.
 
-**Note** This method only sets the text to be printed. To print you must also call the *print()* method, as the example below shows.
+**Note** This method only stores the text to be printed in a buffer. To print you must also call the *print()* method, as the example below shows.
 
 ```squirrel
 // Print an underlined and italicized line of text
@@ -136,7 +140,7 @@ printer.setFont(QL720NW_FONT_SAN_DIEGO)
 
 The *writen()* method sets a line of text to be printed: it automatically prints a New Line character. This method takes one required parameter, *text*, which is a string containing the text to be printed. It also has one optional parameter, *options*. By default no options are set.  Options are selected by OR-ing the class constants *QL720NW_ITALIC*, *QL720NW_BOLD* and *QL720NW_UNDERLINE*..
 
-**Note** This method only sets the text to be printed. To print you must also call the *print()* method, as the example below shows.
+**Note** This method only stores the text to be printed in a buffer. To print you must also call the *print()* method, as the example below shows.
 
 ```squirrel
 // Print an italicized line of text then an underlined line of text
@@ -210,7 +214,7 @@ The *writeBarcode()* method specifies a barcode to be printed. It has one requir
 | *QL720NW_BARCODE_RATIO_25_1* |
 | *QL720NW_BARCODE_RATIO_3_1*  |
 
-**Note** This method only sets the text to be printed. To print you must also call the *print()* method.
+**Note** This method only stores the text to be printed in a buffer. To print you must also call the *print()* method.
 
 ```squirrel
 // Print the device's MAC address as a barcode
@@ -322,7 +326,7 @@ The *write2dBarcode()* method creates a 2D barcode. This method takes two requir
 | *QL720NW_BARCODE_2D_DM_HORIZONTAL_36*   | Rectangular           | 12 cells or 16 cells         |
 | *QL720NW_BARCODE_2D_DM_HORIZONTAL_48*   | Rectangular           | 16 cells                     |
 
-**Note** This method only sets the text to be printed. To print you must also call the *print()* method.
+**Note** This method only stores the text to be printed in a buffer. To print you must also call the *print()* method.
 
 ```squirrel
 mac <- imp.getmacaddress();
