@@ -97,6 +97,8 @@ const QL720NW_BARCODE_RATIO_2_1     = "z0";
 const QL720NW_BARCODE_RATIO_25_1    = "z1";
 const QL720NW_BARCODE_RATIO_3_1     = "z2";
 
+const QL720NW_DEFAULT_HEIGHT        = 0.5;
+
 // 2D Barcode Parameters
 const QL720NW_BARCODE_2D_QR            = "\x71";
 const QL720NW_BARCODE_2D_DATAMATRIX    = "\x64";
@@ -276,28 +278,19 @@ class QL720NW {
 
     // Barcode commands
     function writeBarcode(data, config = {}) {
-        // Set defaults
-        if(!("type" in config)) { config.type <- QL720NW_BARCODE_CODE39; }
-        if(!("width" in config)) { config.width <- QL720NW_BARCODE_WIDTH_XS; }
-        if(!("ratio" in config)) { config.ratio <- QL720NW_BARCODE_RATIO_2_1; }
-        // Configure settings
-        if(!("charsBelowBarcode" in config)) { 
-            config.charsBelowBarcode <- QL720NW_BARCODE_CHARS; 
-        } else {
-            config.charsBelowBarcode = (config.charsBelowBarcode) ? QL720NW_BARCODE_CHARS : QL720NW_BARCODE_NO_CHARS;
-        }
-        local height = 0.5;
-        if(!("height" in config)) { 
-            height = _getBarcodeHeightCmd(height); 
-        } else {
-            height = _getBarcodeHeightCmd(config.height);
-        }
+        // Configure barcode parameters
+        local params = {};
+        params.type <- (!("type" in config)) ? QL720NW_BARCODE_CODE39 : config.type;
+        params.charsBelowBarcode <- (!("charsBelowBarcode" in config) || config.charsBelowBarcode) ? QL720NW_BARCODE_CHARS : QL720NW_BARCODE_NO_CHARS; 
+        params.width <- (!("width" in config)) ? QL720NW_BARCODE_WIDTH_XS : config.width;
+        params.height <- (!("height" in config)) ? _getBarcodeHeightCmd(QL720NW_DEFAULT_HEIGHT) : _getBarcodeHeightCmd(config.height);
+        params.ratio <- (!("ratio" in config)) ? QL720NW_BARCODE_RATIO_2_1 : config.ratio;
+
+        // Write barcode parameters to buffer
+        _buffer.writestring(format("%s%s%s%s%s%s", QL720NW_CMD_BARCODE, params.type, params.charsBelowBarcode, params.width, params.height, params.ratio));
+
+        // Write data & ending command to buffer
         local endBarcode = (config.type == QL720NW_BARCODE_CODE128 || config.type == QL720NW_BARCODE_GS1_128 || config.type == QL720NW_BARCODE_CODE93) ? format("%s%s%s", QL720NW_BACKSLASH, QL720NW_BACKSLASH, QL720NW_BACKSLASH) : QL720NW_BACKSLASH;
-
-        // Write barcode settings to buffer
-        _buffer.writestring(format("%s%s%s%s%s%s", QL720NW_CMD_BARCODE, config.type, config.charsBelowBarcode, config.width, height, config.ratio));
-
-        // Set data & end
         _buffer.writestring(format("%s%s%s", QL720NW_CMD_BARCODE_DATA, data, endBarcode))
 
         return this;
@@ -305,21 +298,21 @@ class QL720NW {
 
     function write2dBarcode(data, type, config = {}) {
         // Set defaults & configure barcode parameters
-        if (!("cell_size" in config)) { config.cell_size <- QL720NW_BARCODE_2D_CELL_SIZE_3; } 
-        local barcodeParams = null;       
+        local cell_size = (!("cell_size" in config)) ? QL720NW_BARCODE_2D_CELL_SIZE_3 : config.cell_size;
+        local barcodeParams = null;
         switch (type) {
             case QL720NW_BARCODE_2D_QR :
-                barcodeParams = _getQRParams(config);
+                barcodeParams = _getQRParams(cell_size, config);
                 break;
             case QL720NW_BARCODE_2D_DATAMATRIX : 
-                barcodeParams = _getDMParams(config);
+                barcodeParams = _getDMParams(cell_size, config);
                 break;
             default : 
                 throw ERROR_2D_BARCODE_NOT_SUPPORTED;
         }
 
         // Write the barcode
-        _buffer.writestring(format("%s%s%s%s%s%s%s%s", QL720NW_CMD_2D_BARCODE, type, config.cell_size, barcodeParams, data, QL720NW_BACKSLASH, QL720NW_BACKSLASH, QL720NW_BACKSLASH));
+        _buffer.writestring(format("%s%s%s%s%s%s%s", QL720NW_CMD_2D_BARCODE, type, barcodeParams, data, QL720NW_BACKSLASH, QL720NW_BACKSLASH, QL720NW_BACKSLASH));
 
         return this;
     }
@@ -331,33 +324,49 @@ class QL720NW {
         _buffer = blob();
     }
 
-    function _getDMParams(config) {
-        if (!("symbol_type" in config)) { config.symbol_type <- QL720NW_BARCODE_2D_DM_SYMBOL_SQUARE; }
-        if (!("vertical_size" in config)) { config.vertical_size <- QL720NW_BARCODE_2D_DM_VERTICAL_AUTO; }
-        if (!("horizontal_size" in config)) { config.horizontal_size <- QL720NW_BARCODE_2D_DM_HORIZONTAL_AUTO; }
+    function _getDMParams(cell_size, config) {
+        // Configure Data Matrix parameters
+        local params = {};
+        params.symbol_type <- (!("symbol_type" in config)) ? QL720NW_BARCODE_2D_DM_SYMBOL_SQUARE : config.symbol_type;
+        params.vertical_size <- (!("vertical_size" in config)) ? QL720NW_BARCODE_2D_DM_VERTICAL_AUTO : config.vertical_size;
+        params.horizontal_size <- (!("horizontal_size" in config)) ? QL720NW_BARCODE_2D_DM_HORIZONTAL_AUTO : config.horizontal_size;
         // Return Data Matrix parameter string
-        return format("%s%s%s%s", config.symbol_type, config.vertical_size, config.horizontal_size, QL720NW_BARCODE_2D_DM_RESERVED);
+        return format("%s%s%s%s%s", cell_size, params.symbol_type, params.vertical_size, params.horizontal_size, QL720NW_BARCODE_2D_DM_RESERVED);
     }
 
-    function _getQRParams(config) {
-        // Configure defaults
-        if (!("symbol_type" in config)) { config.symbol_type <- QL720NW_BARCODE_2D_QR_SYMBOL_MODEL_2; }
-        if (!("error_correction" in config)) { config.error_correction <- QL720NW_BARCODE_2D_QR_ERROR_CORRECTION_STANDARD; }
-        if (!("data_input_method" in config)) { config.data_input_method <- QL720NW_BARCODE_2D_QR_DATA_INPUT_AUTO; }
-        // Configure settings for structure append partitioned or not partitioned
+    function _getQRParams(cell_size, config) {
+        // Configure QR paramters
+        local params = {};
+        params.symbol_type <- (!("symbol_type" in config)) ? QL720NW_BARCODE_2D_QR_SYMBOL_MODEL_2 : config.symbol_type;
+        params.error_correction <- (!("error_correction" in config)) ? QL720NW_BARCODE_2D_QR_ERROR_CORRECTION_STANDARD : config.error_correction;
+        params.data_input_method <- (!("data_input_method" in config)) ? QL720NW_BARCODE_2D_QR_DATA_INPUT_AUTO : config.data_input_method;
+        
+        // Configure structure append partitioned or not partitioned paramters
         if (!("structured_append_partitioned" in config) || !config.structured_append_partitioned) { 
-            config.structured_append <- QL720NW_BARCODE_2D_QR_STRUCTURE_NOT_PARTITIONED;
-            config.code_number <- 0;
-            config.num_partitions <- 0;
-            config.parity_data <- 0;
+            params.structured_append <- QL720NW_BARCODE_2D_QR_STRUCTURE_NOT_PARTITIONED;
+            params.code_number <- 0;
+            params.num_partitions <- 0;
+            params.parity_data <- 0;
         } else {
-            config.structured_append <- QL720NW_BARCODE_2D_QR_STRUCTURE_PARTITIONED;
-            if (!("code_number" in config) || config.code_number < 1 || config.code_number > 16) { throw ERROR_INVALID_CODE_NUMBER; }
-            if (!("num_partitions" in config) || config.num_partitions < 2 || config.num_partitions > 16) { throw ERROR_INVALID_NUMBER_OF_PARTITIONS; }
-            if (!("parity_data" in config)) { config.parity_data <- 0; }
+            params.structured_append <- QL720NW_BARCODE_2D_QR_STRUCTURE_PARTITIONED;
+            if (!("code_number" in config) || config.code_number < 1 || config.code_number > 16) { 
+                throw ERROR_INVALID_CODE_NUMBER; 
+            } else {
+                params.code_number <- config.code_number;
+            }
+            if (!("num_partitions" in config) || config.num_partitions < 2 || config.num_partitions > 16) { 
+                throw ERROR_INVALID_NUMBER_OF_PARTITIONS; 
+            } else {
+                params.num_partitions <- config.num_partitions;
+            }
+            if (!("parity_data" in config)) { 
+                params.parity_data <- 0; 
+            } else {
+                params.parity_data <- config.parity_data;
+            }
         }
         // Return QR parameter string
-        return format("%s%s%c%c%c%s%s" , config.symbol_type, config.structured_append, config.code_number, config.num_partitions, config.parity_data, config.error_correction, config.data_input_method);
+        return format("%s%s%s%c%c%c%s%s" , cell_size, params.symbol_type, params.structured_append, params.code_number, params.num_partitions, params.parity_data, params.error_correction, params.data_input_method);
     }
 
     function _getBarcodeHeightCmd(height) {
