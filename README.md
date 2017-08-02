@@ -361,9 +361,9 @@ printer.write("Hello World")
 
 ## To Do
 
-- BUG Printer drops uart commands while printing. Workaround add a pause after calling print.
-- Test various barcode setting combinations. These have been lightly tests, but not all barcode settings have been tested.
-- Add features
+- Bug fix needed. Printer drops uart commands while printing. Workaround add a pause after calling print method.
+- Test various barcode setting combinations. These have been lightly tested. Not all combinations have been covered and not all barcodes are readable when printed.
+- Not all features have been implemented, may want to add more functionality to driver.
 
 ## License
 
