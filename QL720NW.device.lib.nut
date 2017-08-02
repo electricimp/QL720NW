@@ -42,9 +42,9 @@ const QL720NW_CMD_UNDERLINE_STOP   = "\x1B\x2D\x30";
 const QL720NW_CMD_SET_FONT_SIZE    = "\x1B\x58\x00";
 const QL720NW_CMD_SET_FONT         = "\x1B\x6B";
 
-const QL720NW_CMD_BARCODE          = "\x1B\x69";
-const QL720NW_CMD_BARCODE_DATA     = "\x62"
-const QL720NW_CMD_2D_BARCODE       = "\x1B\x69\x71";
+const QL720NW_CMD_BARCODE               = "\x1B\x69";
+const QL720NW_CMD_BARCODE_DATA          = "\x62"
+const QL720NW_CMD_2D_QR_CODE_VERSION    = "\x1B\x69\x50";
 
 // Orientation Parameters
 const QL720NW_LANDSCAPE            = 0x31;
@@ -164,7 +164,6 @@ const QL720NW_BARCODE_2D_DM_VERTICAL_120        = 0x78;
 const QL720NW_BARCODE_2D_DM_VERTICAL_132        = 0x84;
 const QL720NW_BARCODE_2D_DM_VERTICAL_144        = 0x90;
 
-const QL720NW_BARCODE_2D_DM_HORIZONTAL_X        = "x";
 const QL720NW_BARCODE_2D_DM_HORIZONTAL_AUTO     = 0x00;
 const QL720NW_BARCODE_2D_DM_HORIZONTAL_18       = 0x12;
 const QL720NW_BARCODE_2D_DM_HORIZONTAL_26       = 0x1A;
@@ -285,16 +284,18 @@ class QL720NW {
     // --------------------------------------------------------------------------
 
     function writeBarcode(data, config = {}) {
+        // Store barcode type locally
+        local type = (!("type" in config)) ? QL720NW_BARCODE_CODE39 : config.type;
         // Write barcode command and parameters to buffer
         _buffer.writestring(QL720NW_CMD_BARCODE);
-        _buffer.writestring((!("type" in config)) ? QL720NW_BARCODE_CODE39 : config.type);
+        _buffer.writestring(type);
         _buffer.writestring((!("charsBelowBarcode" in config) || config.charsBelowBarcode) ? QL720NW_BARCODE_CHARS : QL720NW_BARCODE_NO_CHARS);
         _buffer.writestring((!("width" in config)) ? QL720NW_BARCODE_WIDTH_XS : config.width); 
         _buffer.writestring((!("height" in config)) ? _getBarcodeHeightCmd(QL720NW_DEFAULT_HEIGHT) : _getBarcodeHeightCmd(config.height));
         _buffer.writestring((!("ratio" in config)) ? QL720NW_BARCODE_RATIO_2_1 : config.ratio);
 
         // Write data & ending command to buffer
-        local endBarcode = (config.type == QL720NW_BARCODE_CODE128 || config.type == QL720NW_BARCODE_GS1_128 || config.type == QL720NW_BARCODE_CODE93) ? format("%c%c%c", QL720NW_BACKSLASH, QL720NW_BACKSLASH, QL720NW_BACKSLASH) : QL720NW_BACKSLASH.tochar();
+        local endBarcode = (type == QL720NW_BARCODE_CODE128 || type == QL720NW_BARCODE_GS1_128 || type == QL720NW_BARCODE_CODE93) ? format("%c%c%c", QL720NW_BACKSLASH, QL720NW_BACKSLASH, QL720NW_BACKSLASH) : QL720NW_BACKSLASH.tochar();
         _buffer.writestring(format("%s%s%s", QL720NW_CMD_BARCODE_DATA, data, endBarcode));
 
         return this;
@@ -306,7 +307,7 @@ class QL720NW {
         // Organize and check parameters for errors before writing to print buffer 
         local paramsBuffer = blob();
         // Set barcode command and parameters
-        paramsBuffer.writestring(QL720NW_CMD_2D_BARCODE);
+        paramsBuffer.writestring(QL720NW_CMD_BARCODE);
         switch (type) {
             case QL720NW_BARCODE_2D_QR :
                 paramsBuffer.writen(QL720NW_BARCODE_2D_QR, 'b');
@@ -345,10 +346,24 @@ class QL720NW {
 
     function _setDMParams(config, paramsBuffer) {
         // Note for 2d barcodes the order of the paramters matters
+
+        local sType = QL720NW_BARCODE_2D_DM_SYMBOL_SQUARE;
+        if ("symbol_type" in config && config.symbol_type == QL720NW_BARCODE_2D_DM_SYMBOL_RECTANGLE) sType = QL720NW_BARCODE_2D_DM_SYMBOL_RECTANGLE;
+
+        local vSize = QL720NW_BARCODE_2D_DM_VERTICAL_AUTO;
+        if ("vertical_size" in config) vSize = config.vertical_size;
+
+        local hSize = QL720NW_BARCODE_2D_DM_HORIZONTAL_AUTO;
+        if (sType == QL720NW_BARCODE_2D_DM_SYMBOL_SQUARE) {
+            hSize = vSize;
+        } else if ("horizontal_size" in config) {
+            hSize = config.horizontal_size;
+        }
+
         // Write Data Matrix parameters to buffer
-        paramsBuffer.writen((!("symbol_type" in config)) ? QL720NW_BARCODE_2D_DM_SYMBOL_SQUARE : config.symbol_type, 'b');
-        paramsBuffer.writen((!("vertical_size" in config)) ? QL720NW_BARCODE_2D_DM_VERTICAL_AUTO : config.vertical_size, 'b');
-        paramsBuffer.writen((!("horizontal_size" in config)) ? QL720NW_BARCODE_2D_DM_HORIZONTAL_AUTO : config.horizontal_size, 'b');
+        paramsBuffer.writen(sType, 'b');
+        paramsBuffer.writen(vSize, 'b');
+        paramsBuffer.writen(hSize, 'b');
         paramsBuffer.writestring(QL720NW_BARCODE_2D_DM_RESERVED);
     }
 

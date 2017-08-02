@@ -1,6 +1,6 @@
 # QL720NW
 
-This is a driver library for the Brother Label Printer. The printer’s user manual can be found [here](./cv_ql720_eng_escp_100.pdf). 
+This is a driver library for the Brother Label Printer. The printer’s data sheet can be found [here](./cv_ql720_eng_escp_100.pdf). This library exposes basic text and barcode print functionality. It does not implement all of the functionality of the printer as outlined in the data sheet. Please submit pull requests for added features.  
 
 **To use this library, add the following statement to the top of your device code:**
 
@@ -48,10 +48,14 @@ printer.initialize();
 
 The *setOrientation()* method sets the orientation of the printed text. It takes one required parameter, *orientation*, which should be either of the constants *QL720NW_LANDSCAPE* or *QL720NW_PORTRAIT*.
 
+**Note:** The parameter set by the *setOrientation()* method are immediately written to UART when called, and so will take effect immediately and effect everything stored in the print buffer.
+
 ```squirrel
 // Set to landscape mode
 printer.setOrientation(QL720NW_LANDSCAPE);
+```
 
+```squirrel
 // Set to portrait mode
 printer.setOrientation(QL720NW_PORTRAIT);
 ```
@@ -60,9 +64,13 @@ printer.setOrientation(QL720NW_PORTRAIT);
 
 The *setRightMargin()* method sets the right margin. It takes one required parameter, *column*, which is an integer. The position of the right margin is the character width times *column* from the left edge. See the ‘Margin Notes’ diagram, below, for more details.
 
+**Note:** The parameter set by the *setRightMargin()* method are immediately written to UART when called, and so will take effect immediately and effect everything stored in the print buffer.
+
 ### setLeftMargin(*column*)
 
 The *setLeftMargin()* method sets the left margin. It takes one required parameter, *column*, which is an integer. The position of the left margin is the character width times *column* from the left edge. See the ‘Margin Notes’ diagram, below, for more details.
+
+**Note:** The parameter set by the *setLeftMargin()* method are immediately written to UART when called, and so will take effect immediately and effect everything stored in the print buffer.
 
 #### Margin Notes
 
@@ -98,7 +106,7 @@ The *setFont()* method sets the font using the *font* parameter. The table below
 | *QL720NW_FONT_HELSINKI* |
 | *QL720NW_FONT_SAN_DIEGO* |
 
-**Note:** *setFont()* settings are stored to the print buffer, so these settings are cleared whenever the *print()* method is called.
+**Note:** *setFont()* settings are stored to the print buffer, so will only effect things added to the print buffer after the *setFont()* method is called and these settings are cleared whenever the *print()* method is called.
 
 ```squirrel
 // Set font to Helsinki
@@ -115,7 +123,7 @@ The *setFontSize()* method sets the font size (in points) using the *size* param
 | *QL720NW_FONT_SIZE_32* |
 | *QL720NW_FONT_SIZE_48* |
 
-**Note:** *setFontSize()* settings are stored to the print buffer, so these settings are cleared whenever the *print()* method is called.
+**Note:** *setFontSize()* settings are stored to the print buffer, so will only effect things added to the print buffer after the *setFont()* method is called and these settings are cleared whenever the *print()* method is called.
 
 ```squirrel
 // Set font size to 32
@@ -237,7 +245,7 @@ The *write2dBarcode()* method creates a 2D barcode. This method takes two requir
 | Config Table Key                | Value Data type            | Default Value                                | Description     |
 | ------------------------------- | -------------------------- | -------------------------------------------- | --------------- |
 | *cell_size*                     | Cell Size Constant         | QL720NW_BARCODE_2D_CELL_SIZE_3               | Specifies the dot size per cell side. See table below |
-| *symbol_type*                   | Symbol Type Constant       | QL720NW_BARCODE_2D_QR_SYMBOL_MODEL_2            | Symbol type to be used. See table below |
+| *symbol_type*                   | Symbol Type Constant       | QL720NW_BARCODE_2D_QR_SYMBOL_MODEL_2         | Symbol type to be used. See table below |
 | *structured_append_partitioned* | Boolean                    | false                                        | Whether the structured append is partitioned |
 | *code_number*                   | Integer                    | 0                                            | Indicates the number of the symbol in a partitioned QR Code. Must set a number between 1-16 if *structured_append_partitioned* is set to `true` |
 | *num_partitions*                | Integer                    | 0                                            | Indicates the total number of symbols in a partitioned QR Code. Must set a number between 2-16 if *structured_append_partitioned* is set to `true` |
@@ -252,7 +260,7 @@ The *write2dBarcode()* method creates a 2D barcode. This method takes two requir
 | *cell_size*       | Cell Size Constant        | QL720NW_BARCODE_2D_CELL_SIZE_3        | Specifies the dot size per cell side. See table below |
 | *symbol_type*     | Symbol Type Constant      | QL720NW_BARCODE_2D_DM_SYMBOL_SQUARE   | Symbol type to be used. Square: QL720NW_BARCODE_2D_DM_SYMBOL_SQUARE, Rectangular: QL720NW_BARCODE_2D_DM_SYMBOL_RECTANGLE |
 | *vertical_size*   | Vertical Size Constant    | QL720NW_BARCODE_2D_DM_VERTICAL_AUTO   | Specifies the vertical number of cells. See table below |
-| *horizontal_size* | Horizontal Size Constant  | QL720NW_BARCODE_2D_DM_HORIZONTAL_AUTO | Specifies the horizontal number of cells. See table below |
+| *horizontal_size* | Horizontal Size Constant  | QL720NW_BARCODE_2D_DM_HORIZONTAL_AUTO | Specifies the horizontal number of cells. If symbol_type QL720NW_BARCODE_2D_DM_SYMBOL_SQUARE is selected the horizontal_size will match the vertical_size. For all other supported values see table below |
 
 #### Cell Size
 
@@ -318,7 +326,6 @@ The *write2dBarcode()* method creates a 2D barcode. This method takes two requir
 
 | Horizontal Size Constant                | Supported Symbol Type | Supported Vertical Cell Size |
 | --------------------------------------- | --------------------- | ---------------------------- |
-| *QL720NW_BARCODE_2D_DM_HORIZONTAL_X*    | Square                | Same value as vertical size  |
 | *QL720NW_BARCODE_2D_DM_HORIZONTAL_AUTO* | Rectangular           | Auto                         |
 | *QL720NW_BARCODE_2D_DM_HORIZONTAL_18*   | Rectangular           | 8 cells                      |
 | *QL720NW_BARCODE_2D_DM_HORIZONTAL_32*   | Rectangular           | 8 cells                      |
@@ -354,8 +361,9 @@ printer.write("Hello World")
 
 ## To Do
 
-- More extensive testing (printer occasionally silently fails)
-- Improve 2D barcode implementation
+- BUG Printer drops uart commands while printing. Workaround add a pause after calling print.
+- Test various barcode setting combinations. These have been lightly tests, but not all barcode settings have been tested.
+- Add features
 
 ## License
 

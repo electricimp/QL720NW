@@ -1,0 +1,14 @@
+{
+    "modelId": "uBUBEAO70tY1" /* PrinterTesting */,
+    "devices": [
+        "2320a8b236a7c9ee" /* 2320a8b236a7c9ee */
+    ],
+    "agentFile": false,
+    "deviceFile": "QL720NW.device.lib.nut",
+    "stopOnFailure": false,
+    "timeout": 30,
+    "tests": [
+        "*.test.nut",
+        "tests/**/*.test.nut"
+    ]
+}
