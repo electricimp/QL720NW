@@ -91,10 +91,10 @@ imp.sleep(5);
 
 // Configure and print QR Code
 qrBarcodeSettings <- { "cell_size": 5,
-                      "symbol_type": QL720NW_BARCODE_2D_QR_SYMBOL_MODEL_2,
-                      "structured_append_partitioned": false,
-                      "error_correction": QL720NW_BARCODE_2D_QR_ERROR_CORRECTION_STANDARD,
-                      "data_input_method": QL720NW_BARCODE_2D_QR_DATA_INPUT_AUTO };
+                       "symbol_type": QL720NW_BARCODE_2D_QR_SYMBOL_MODEL_2,
+                       "structured_append_partitioned": false,
+                       "error_correction": QL720NW_BARCODE_2D_QR_ERROR_CORRECTION_STANDARD,
+                       "data_input_method": QL720NW_BARCODE_2D_QR_DATA_INPUT_AUTO };
 
 printer.write2dBarcode(imp.getmacaddress(), QL720NW_BARCODE_2D_QR, qrBarcodeSettings).print();
 
