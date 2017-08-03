@@ -89,7 +89,7 @@ printer.print();
 imp.sleep(0.5);
 
 // Configure and print QR Code
-qrBarcodeSettings <- { "cell_size": QL720NW_BARCODE_2D_CELL_SIZE_5,
+qrBarcodeSettings <- { "cell_size": 5,
                        "symbol_type": QL720NW_BARCODE_2D_QR_SYMBOL_MODEL_2,
                        "structured_append_partitioned": false,
                        "error_correction": QL720NW_BARCODE_2D_QR_ERROR_CORRECTION_STANDARD,

@@ -44,7 +44,6 @@ const QL720NW_CMD_SET_FONT         = "\x1B\x6B";
 
 const QL720NW_CMD_BARCODE               = "\x1B\x69";
 const QL720NW_CMD_BARCODE_DATA          = "\x62"
-const QL720NW_CMD_2D_QR_CODE_VERSION    = "\x1B\x69\x50";
 
 // Orientation Parameters
 const QL720NW_LANDSCAPE            = 0x31;
@@ -96,22 +95,17 @@ const QL720NW_BARCODE_WIDTH_S       = "w1";
 const QL720NW_BARCODE_WIDTH_M       = "w2";
 const QL720NW_BARCODE_WIDTH_L       = "w3";
 
-const QL720NW_BARCODE_RATIO_2_1     = "z0";
+const QL720NW_BARCODE_RATIO_3_1     = "z0";
 const QL720NW_BARCODE_RATIO_25_1    = "z1";
-const QL720NW_BARCODE_RATIO_3_1     = "z2";
+const QL720NW_BARCODE_RATIO_2_1     = "z2";
 
 const QL720NW_DEFAULT_HEIGHT        = 0.5;
+const QL720NW_DEFAULT_CELL_SIZE     = 3;
+const QL720NW_DEFAULT_SIZE_AUTO     = 0;
 
 // 2D Barcode Parameters
 const QL720NW_BARCODE_2D_QR            = 0x71;
 const QL720NW_BARCODE_2D_DATAMATRIX    = 0x64;
-
-const QL720NW_BARCODE_2D_CELL_SIZE_3   = 0x03;
-const QL720NW_BARCODE_2D_CELL_SIZE_4   = 0x04;
-const QL720NW_BARCODE_2D_CELL_SIZE_5   = 0x05;
-const QL720NW_BARCODE_2D_CELL_SIZE_6   = 0x06;
-const QL720NW_BARCODE_2D_CELL_SIZE_8   = 0x08;
-const QL720NW_BARCODE_2D_CELL_SIZE_10  = 0x0A;
 
 // 2D QR Barcode Parameters
 const QL720NW_BARCODE_2D_QR_SYMBOL_MODEL_1    = 0x01;
@@ -137,40 +131,6 @@ const QL720NW_DEFAULT_PARITY_DATA               = 0x00;
 const QL720NW_BARCODE_2D_DM_SYMBOL_SQUARE       = 0x00;
 const QL720NW_BARCODE_2D_DM_SYMBOL_RECTANGLE    = 0x01;
 
-const QL720NW_BARCODE_2D_DM_VERTICAL_AUTO       = 0x00;
-const QL720NW_BARCODE_2D_DM_VERTICAL_8          = 0x08;
-const QL720NW_BARCODE_2D_DM_VERTICAL_10         = 0x0A;
-const QL720NW_BARCODE_2D_DM_VERTICAL_12         = 0x0C;
-const QL720NW_BARCODE_2D_DM_VERTICAL_14         = 0x0E;
-const QL720NW_BARCODE_2D_DM_VERTICAL_16         = 0x10;
-const QL720NW_BARCODE_2D_DM_VERTICAL_18         = 0x12;
-const QL720NW_BARCODE_2D_DM_VERTICAL_20         = 0x14;
-const QL720NW_BARCODE_2D_DM_VERTICAL_22         = 0x16;
-const QL720NW_BARCODE_2D_DM_VERTICAL_24         = 0x18;
-const QL720NW_BARCODE_2D_DM_VERTICAL_26         = 0x1A;
-const QL720NW_BARCODE_2D_DM_VERTICAL_32         = 0x20;
-const QL720NW_BARCODE_2D_DM_VERTICAL_36         = 0x24;
-const QL720NW_BARCODE_2D_DM_VERTICAL_40         = 0x28;
-const QL720NW_BARCODE_2D_DM_VERTICAL_44         = 0x2C;
-const QL720NW_BARCODE_2D_DM_VERTICAL_48         = 0x30;
-const QL720NW_BARCODE_2D_DM_VERTICAL_52         = 0x34;
-const QL720NW_BARCODE_2D_DM_VERTICAL_64         = 0x40;
-const QL720NW_BARCODE_2D_DM_VERTICAL_72         = 0x48;
-const QL720NW_BARCODE_2D_DM_VERTICAL_80         = 0x50;
-const QL720NW_BARCODE_2D_DM_VERTICAL_88         = 0x58;
-const QL720NW_BARCODE_2D_DM_VERTICAL_96         = 0x60;
-const QL720NW_BARCODE_2D_DM_VERTICAL_104        = 0x68;
-const QL720NW_BARCODE_2D_DM_VERTICAL_120        = 0x78;
-const QL720NW_BARCODE_2D_DM_VERTICAL_132        = 0x84;
-const QL720NW_BARCODE_2D_DM_VERTICAL_144        = 0x90;
-
-const QL720NW_BARCODE_2D_DM_HORIZONTAL_AUTO     = 0x00;
-const QL720NW_BARCODE_2D_DM_HORIZONTAL_18       = 0x12;
-const QL720NW_BARCODE_2D_DM_HORIZONTAL_26       = 0x1A;
-const QL720NW_BARCODE_2D_DM_HORIZONTAL_32       = 0x20;
-const QL720NW_BARCODE_2D_DM_HORIZONTAL_36       = 0x24;
-const QL720NW_BARCODE_2D_DM_HORIZONTAL_48       = 0x30;
-
 // Store parameter as a string because of length, but note that you can not concatinate with format()
 const QL720NW_BARCODE_2D_DM_RESERVED            = "\x00\x00\x00\x00\x00";
 
@@ -181,6 +141,7 @@ const ERROR_INVALID_FONT_SIZE            = "Invalid font size";
 const ERROR_2D_BARCODE_NOT_SUPPORTED     = "2D barcode type not supported";
 const ERROR_INVALID_CODE_NUMBER          = "Code number must be between 1-16";
 const ERROR_INVALID_NUMBER_OF_PARTITIONS = "Number of partitions must be between 2-16";
+const ERROR_INVALID_BARCODE_DATA_TYPE    = "Barcode data must be a string or an integer";
 
 class QL720NW {
 
@@ -284,6 +245,10 @@ class QL720NW {
     // --------------------------------------------------------------------------
 
     function writeBarcode(data, config = {}) {
+        // Check data 
+        if (typeof data == "integer") data = data.tostring();
+        if (typeof data != "string") throw ERROR_INVALID_BARCODE_DATA_TYPE;
+
         // Store barcode type locally
         local type = (!("type" in config)) ? QL720NW_BARCODE_CODE39 : config.type;
         // Write barcode command and parameters to buffer
@@ -302,8 +267,12 @@ class QL720NW {
     }
 
     function write2dBarcode(data, type, config = {}) {
+        // Check data 
+        if (typeof data == "integer") data = data.tostring();
+        if (typeof data != "string") throw ERROR_INVALID_BARCODE_DATA_TYPE;
+
         // Note for 2d barcodes the order of the paramters matters
-        local cell_size = (!("cell_size" in config)) ? QL720NW_BARCODE_2D_CELL_SIZE_3 : config.cell_size;
+        local cell_size = (!("cell_size" in config)) ? QL720NW_DEFAULT_CELL_SIZE : config.cell_size;
         // Organize and check parameters for errors before writing to print buffer 
         local paramsBuffer = blob();
         // Set barcode command and parameters
@@ -350,10 +319,10 @@ class QL720NW {
         local sType = QL720NW_BARCODE_2D_DM_SYMBOL_SQUARE;
         if ("symbol_type" in config && config.symbol_type == QL720NW_BARCODE_2D_DM_SYMBOL_RECTANGLE) sType = QL720NW_BARCODE_2D_DM_SYMBOL_RECTANGLE;
 
-        local vSize = QL720NW_BARCODE_2D_DM_VERTICAL_AUTO;
+        local vSize = QL720NW_DEFAULT_SIZE_AUTO;
         if ("vertical_size" in config) vSize = config.vertical_size;
 
-        local hSize = QL720NW_BARCODE_2D_DM_HORIZONTAL_AUTO;
+        local hSize = QL720NW_DEFAULT_SIZE_AUTO;
         if (sType == QL720NW_BARCODE_2D_DM_SYMBOL_SQUARE) {
             hSize = vSize;
         } else if ("horizontal_size" in config) {
@@ -405,7 +374,7 @@ class QL720NW {
 
     function _getBarcodeHeightCmd(height) {
         // set to defualt height if non-numeric height was passed in
-        if (typeof height != "integer" || typeof height != "float") height = QL720NW_DEFAULT_HEIGHT; 
+        if (typeof height != "integer" && typeof height != "float") height = QL720NW_DEFAULT_HEIGHT; 
         // Convert height (in inches) to dots
         height = (height * QL720NW_DOTS_PER_INCH).tointeger();
         // Height marker command "h", height lower bit, height upper bit

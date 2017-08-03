@@ -127,7 +127,7 @@ The *setFontSize()* method sets the font size (in points) using the *size* param
 
 ```squirrel
 // Set font size to 32
-printer.setFont(QL720NW_FONT_SIZE_32);
+printer.setFontSize(QL720NW_FONT_SIZE_32);
 ```
 
 ### write(*text[, options]*)
@@ -242,36 +242,16 @@ The *write2dBarcode()* method creates a 2D barcode. This method takes two requir
 
 #### QR Configuration Table
 
-| Config Table Key                | Value Data type            | Default Value                                | Description     |
-| ------------------------------- | -------------------------- | -------------------------------------------- | --------------- |
-| *cell_size*                     | Cell Size Constant         | QL720NW_BARCODE_2D_CELL_SIZE_3               | Specifies the dot size per cell side. See table below |
-| *symbol_type*                   | Symbol Type Constant       | QL720NW_BARCODE_2D_QR_SYMBOL_MODEL_2         | Symbol type to be used. See table below |
-| *structured_append_partitioned* | Boolean                    | false                                        | Whether the structured append is partitioned |
-| *code_number*                   | Integer                    | 0                                            | Indicates the number of the symbol in a partitioned QR Code. Must set a number between 1-16 if *structured_append_partitioned* is set to `true` |
-| *num_partitions*                | Integer                    | 0                                            | Indicates the total number of symbols in a partitioned QR Code. Must set a number between 2-16 if *structured_append_partitioned* is set to `true` |
-| *parity_data*                   | hexadecimal                | 0                                            | Value in bytes of exclusively OR-ing all the print data (print data before partition) |
+| Config Table Key                | Value Data type            | Default Value                                     | Description     |
+| ------------------------------- | -------------------------- | ------------------------------------------------- | --------------- |
+| *cell_size*                     | integer                    | 3                                                 | Specifies the dot size per cell side. Supported values are 3, 4, 5, 6, 8, 10 |
+| *symbol_type*                   | Symbol Type Constant       | QL720NW_BARCODE_2D_QR_SYMBOL_MODEL_2              | Symbol type to be used. See table below |
+| *structured_append_partitioned* | Boolean                    | false                                             | Whether the structured append is partitioned |
+| *code_number*                   | Integer                    | 0                                                 | Indicates the number of the symbol in a partitioned QR Code. Must set a number between 1-16 if *structured_append_partitioned* is set to `true` |
+| *num_partitions*                | Integer                    | 0                                                 | Indicates the total number of symbols in a partitioned QR Code. Must set a number between 2-16 if *structured_append_partitioned* is set to `true` |
+| *parity_data*                   | hexadecimal                | 0                                                 | Value in bytes of exclusively OR-ing all the print data (print data before partition) |
 | *error_correction*              | Error Correction Constant  | *QL720NW_BARCODE_2D_QR_ERROR_CORRECTION_STANDARD* | See table below |
 | *data_input_method*             | Data Input Method Constant | *QL720NW_BARCODE_2D_QR_DATA_INPUT_AUTO*           | Auto: *QL720NW_BARCODE_2D_QR_DATA_INPUT_AUTO*,<br>Manual: *QL720NW_BARCODE_2D_QR_DATA_INPUT_MANUAL* |
-
-#### Data Matrix Configuration Table
-
-| Config Table Key  | Value Data type           | Default Value                 | Description     |
-| ----------------- | ------------------------- | ----------------------------- | --------------- |
-| *cell_size*       | Cell Size Constant        | QL720NW_BARCODE_2D_CELL_SIZE_3        | Specifies the dot size per cell side. See table below |
-| *symbol_type*     | Symbol Type Constant      | QL720NW_BARCODE_2D_DM_SYMBOL_SQUARE   | Symbol type to be used. Square: QL720NW_BARCODE_2D_DM_SYMBOL_SQUARE, Rectangular: QL720NW_BARCODE_2D_DM_SYMBOL_RECTANGLE |
-| *vertical_size*   | Vertical Size Constant    | QL720NW_BARCODE_2D_DM_VERTICAL_AUTO   | Specifies the vertical number of cells. See table below |
-| *horizontal_size* | Horizontal Size Constant  | QL720NW_BARCODE_2D_DM_HORIZONTAL_AUTO | Specifies the horizontal number of cells. If symbol_type QL720NW_BARCODE_2D_DM_SYMBOL_SQUARE is selected the horizontal_size will match the vertical_size. For all other supported values see table below |
-
-#### Cell Size
-
-| Cell Size Constant                |
-| --------------------------------- |
-| *QL720NW_BARCODE_2D_CELL_SIZE_3*  |
-| *QL720NW_BARCODE_2D_CELL_SIZE_4*  |
-| *QL720NW_BARCODE_2D_CELL_SIZE_5*  |
-| *QL720NW_BARCODE_2D_CELL_SIZE_6*  |
-| *QL720NW_BARCODE_2D_CELL_SIZE_8*  |
-| *QL720NW_BARCODE_2D_CELL_SIZE_10* |
 
 #### QR Symbol Type
 
@@ -290,55 +270,32 @@ The *write2dBarcode()* method creates a 2D barcode. This method takes two requir
 | *QL720NW_BARCODE_2D_QR_ERROR_CORRECTION_HIGH_RELIABILITY*       | High-reliability level: Q 25%       |
 | *QL720NW_BARCODE_2D_QR_ERROR_CORRECTION_ULTRA_HIGH_RELIABILITY* | Ultra-high-reliability level: H 30% |
 
+#### Data Matrix Configuration Table
 
-#### Data Matrix Vertical Size
+| Config Table Key  | Value Data Type       | Default Value                       | Description     |
+| ----------------- | --------------------- | ----------------------------------- | --------------- |
+| *cell_size*       | integer               | 3                                   | Specifies the dot size per cell side. Supported values are 3, 4, 5, 6, 8, 10 |
+| *symbol_type*     | Symbol Type Constant  | QL720NW_BARCODE_2D_DM_SYMBOL_SQUARE | Symbol type to be used. Square: QL720NW_BARCODE_2D_DM_SYMBOL_SQUARE, Rectangular: QL720NW_BARCODE_2D_DM_SYMBOL_RECTANGLE |
+| *vertical_size*   | integer               | 0 (Auto)                            | Specifies the vertical number of cells. Supported vaules for square type are 0(Auto), 10, 12, 14, 16, 18, 20, 22, 24, 26, 32, 36, 40, 44, 48, 52, 64, 72, 80, 88, 96, 104, 120, 132, 144. Supported vaules for rectangular type are 0(Auto), 8, 12, 16 |
+| *horizontal_size* | integer               | 0 (Auto)                            | Specifies the horizontal number of cells. If square type is selected horizontal size with be set to match the vertical size. The horizontal_size is only supported in conjunction with specific vertical_sizes. See table below for supported rectangular horizontal cell sizes. |
 
-| Vertical Size Constant                | Supported Symbol Type |
-| ------------------------------------- | ----------------------|
-| *QL720NW_BARCODE_2D_DM_VERTICAL_AUTO* | Square & Rectangular  |
-| *QL720NW_BARCODE_2D_DM_VERTICAL_8*    | Rectangular           |
-| *QL720NW_BARCODE_2D_DM_VERTICAL_10*   | Square                |
-| *QL720NW_BARCODE_2D_DM_VERTICAL_12*   | Square & Rectangular  |
-| *QL720NW_BARCODE_2D_DM_VERTICAL_14*   | Square                |
-| *QL720NW_BARCODE_2D_DM_VERTICAL_16*   | Square & Rectangular  |
-| *QL720NW_BARCODE_2D_DM_VERTICAL_18*   | Square                |
-| *QL720NW_BARCODE_2D_DM_VERTICAL_20*   | Square                |
-| *QL720NW_BARCODE_2D_DM_VERTICAL_22*   | Square                |
-| *QL720NW_BARCODE_2D_DM_VERTICAL_24*   | Square                |
-| *QL720NW_BARCODE_2D_DM_VERTICAL_26*   | Square                |
-| *QL720NW_BARCODE_2D_DM_VERTICAL_32*   | Square                |
-| *QL720NW_BARCODE_2D_DM_VERTICAL_36*   | Square                |
-| *QL720NW_BARCODE_2D_DM_VERTICAL_40*   | Square                |
-| *QL720NW_BARCODE_2D_DM_VERTICAL_44*   | Square                |
-| *QL720NW_BARCODE_2D_DM_VERTICAL_48*   | Square                |
-| *QL720NW_BARCODE_2D_DM_VERTICAL_52*   | Square                |
-| *QL720NW_BARCODE_2D_DM_VERTICAL_64*   | Square                |
-| *QL720NW_BARCODE_2D_DM_VERTICAL_72*   | Square                |
-| *QL720NW_BARCODE_2D_DM_VERTICAL_80*   | Square                |
-| *QL720NW_BARCODE_2D_DM_VERTICAL_88*   | Square                |
-| *QL720NW_BARCODE_2D_DM_VERTICAL_96*   | Square                |
-| *QL720NW_BARCODE_2D_DM_VERTICAL_104*  | Square                |
-| *QL720NW_BARCODE_2D_DM_VERTICAL_120*  | Square                |
-| *QL720NW_BARCODE_2D_DM_VERTICAL_132*  | Square                |
-| *QL720NW_BARCODE_2D_DM_VERTICAL_144*  | Square                |
+#### Data Matrix Rectangular Horizontal Size
 
-#### Data Matrix Horizontal Size
-
-| Horizontal Size Constant                | Supported Symbol Type | Supported Vertical Cell Size |
-| --------------------------------------- | --------------------- | ---------------------------- |
-| *QL720NW_BARCODE_2D_DM_HORIZONTAL_AUTO* | Rectangular           | Auto                         |
-| *QL720NW_BARCODE_2D_DM_HORIZONTAL_18*   | Rectangular           | 8 cells                      |
-| *QL720NW_BARCODE_2D_DM_HORIZONTAL_32*   | Rectangular           | 8 cells                      |
-| *QL720NW_BARCODE_2D_DM_HORIZONTAL_26*   | Rectangular           | 12 cells                     |
-| *QL720NW_BARCODE_2D_DM_HORIZONTAL_36*   | Rectangular           | 12 cells or 16 cells         |
-| *QL720NW_BARCODE_2D_DM_HORIZONTAL_48*   | Rectangular           | 16 cells                     |
+| Horizontal Cell Size | Data Type | Supported Vertical Cell Size |
+| -------------------- | --------- | ---------------------------- |
+| *0 (Auto)*           | integer   | Auto                         |
+| *18*                 | integer   | 8 cells                      |
+| *32*                 | integer   | 8 cells                      |
+| *26*                 | integer   | 12 cells                     |
+| *36*                 | integer   | 12 cells or 16 cells         |
+| *48*                 | integer   | 16 cells                     |
 
 **Note** This method only stores the text to be printed in a buffer. To print you must also call the *print()* method.
 
 ```squirrel
 mac <- imp.getmacaddress();
-qrSettings <- { "cell_size": QL720NW_BARCODE_2D_CELL_SIZE_5 };
-dataMatrixSettings <- { "cell_size" : QL720NW_BARCODE_2D_CELL_SIZE_8 };
+qrSettings <- { "cell_size": 5 };
+dataMatrixSettings <- { "cell_size" : 8 };
 
 // write QR barcode
 printer.write2dBarcode(mac, QL720NW_BARCODE_2D_QR, qrSettings);

@@ -136,27 +136,27 @@ class ManualBarcodePrintingTests extends ImpTestCase {
 
     function test4_2DQR_NotPartitioned() {
         // test various cell size, and error correction
-        local s1 = {"cell_size" : QL720NW_BARCODE_2D_CELL_SIZE_3, 
+        local s1 = {"cell_size" : 3, 
                     "symbol_type" : QL720NW_BARCODE_2D_QR_SYMBOL_MODEL_2, 
                     "error_correction" : QL720NW_BARCODE_2D_QR_ERROR_CORRECTION_STANDARD,
                     "data_input_method" : QL720NW_BARCODE_2D_QR_DATA_INPUT_AUTO };
-        local s2 = {"cell_size" : QL720NW_BARCODE_2D_CELL_SIZE_4, 
+        local s2 = {"cell_size" : 4, 
                     "symbol_type" : QL720NW_BARCODE_2D_QR_SYMBOL_MODEL_2, 
                     "error_correction" : QL720NW_BARCODE_2D_QR_ERROR_CORRECTION_HIGH_RELIABILITY,
                     "data_input_method" : QL720NW_BARCODE_2D_QR_DATA_INPUT_AUTO };
-        local s3 = {"cell_size" : QL720NW_BARCODE_2D_CELL_SIZE_5, 
+        local s3 = {"cell_size" : 5, 
                     "symbol_type" : QL720NW_BARCODE_2D_QR_SYMBOL_MODEL_2, 
                     "error_correction" : QL720NW_BARCODE_2D_QR_ERROR_CORRECTION_HIGH_DENSITY,
                     "data_input_method" : QL720NW_BARCODE_2D_QR_DATA_INPUT_AUTO };
-        local s4 = {"cell_size" : QL720NW_BARCODE_2D_CELL_SIZE_6, 
+        local s4 = {"cell_size" : 6, 
                     "symbol_type" : QL720NW_BARCODE_2D_QR_SYMBOL_MODEL_2, 
                     "error_correction" : QL720NW_BARCODE_2D_QR_ERROR_CORRECTION_STANDARD,
                     "data_input_method" : QL720NW_BARCODE_2D_QR_DATA_INPUT_AUTO };
-        local s5 = {"cell_size" : QL720NW_BARCODE_2D_CELL_SIZE_8, 
+        local s5 = {"cell_size" : 8, 
                     "symbol_type" : QL720NW_BARCODE_2D_QR_SYMBOL_MODEL_2, 
                     "error_correction" : QL720NW_BARCODE_2D_QR_ERROR_CORRECTION_STANDARD,
                     "data_input_method" : QL720NW_BARCODE_2D_QR_DATA_INPUT_AUTO };
-        local s6 = {"cell_size" : QL720NW_BARCODE_2D_CELL_SIZE_10, 
+        local s6 = {"cell_size" : 10, 
                     "symbol_type" : QL720NW_BARCODE_2D_QR_SYMBOL_MODEL_2, 
                     "error_correction" : QL720NW_BARCODE_2D_QR_ERROR_CORRECTION_STANDARD,
                     "data_input_method" : QL720NW_BARCODE_2D_QR_DATA_INPUT_AUTO };
@@ -195,9 +195,9 @@ class ManualBarcodePrintingTests extends ImpTestCase {
         // the parity for 123456789 is 0x31
 
         // default settings except cell_size
-        local control = {"cell_size" : QL720NW_BARCODE_2D_CELL_SIZE_4};
+        local control = {"cell_size" : 4};
         // partition settings
-        local partitioned = {"cell_size" : QL720NW_BARCODE_2D_CELL_SIZE_4,
+        local partitioned = {"cell_size" : 4,
                               "structured_append_partitioned" : true,
                               "code_number" : 1,
                               "num_partitions" : 3,
@@ -223,7 +223,7 @@ class ManualBarcodePrintingTests extends ImpTestCase {
     }
 
     function test6_2DQR_ManualInput() {
-        local s1 = {"cell_size" : QL720NW_BARCODE_2D_CELL_SIZE_5, 
+        local s1 = {"cell_size" : 5, 
                      "symbol_type" : QL720NW_BARCODE_2D_QR_SYMBOL_MODEL_2, 
                      "error_correction" : QL720NW_BARCODE_2D_QR_ERROR_CORRECTION_STANDARD,
                      "data_input_method" : QL720NW_BARCODE_2D_QR_DATA_INPUT_MANUAL };
@@ -241,39 +241,39 @@ class ManualBarcodePrintingTests extends ImpTestCase {
         // test various cell sizes
 
         // Check that default vertical and horizontal work
-        local s1 = {"cell_size" : QL720NW_BARCODE_2D_CELL_SIZE_8, 
+        local s1 = {"cell_size" : 8, 
                      "symbol_type" : QL720NW_BARCODE_2D_DM_SYMBOL_SQUARE };
 
-        local s2 = {"cell_size" : QL720NW_BARCODE_2D_CELL_SIZE_8, 
+        local s2 = {"cell_size" : 8, 
                      "symbol_type" : QL720NW_BARCODE_2D_DM_SYMBOL_SQUARE, 
-                     "vertical_size" : QL720NW_BARCODE_2D_DM_VERTICAL_10 };
+                     "vertical_size" : 10 };
 
-        local s3 = {"cell_size" : QL720NW_BARCODE_2D_CELL_SIZE_8, 
+        local s3 = {"cell_size" : 8, 
                      "symbol_type" : QL720NW_BARCODE_2D_DM_SYMBOL_SQUARE, 
-                     "vertical_size" : QL720NW_BARCODE_2D_DM_VERTICAL_20 };
+                     "vertical_size" : 20 };
 
-        local s4 = {"cell_size" : QL720NW_BARCODE_2D_CELL_SIZE_4, 
+        local s4 = {"cell_size" : 4, 
                      "symbol_type" : QL720NW_BARCODE_2D_DM_SYMBOL_SQUARE, 
-                     "vertical_size" : QL720NW_BARCODE_2D_DM_VERTICAL_52 };
+                     "vertical_size" : 52 };
 
         // Check that default vertical and horizontal work
-        local r1 = {"cell_size" : QL720NW_BARCODE_2D_CELL_SIZE_5, 
+        local r1 = {"cell_size" : 5, 
                      "symbol_type" : QL720NW_BARCODE_2D_DM_SYMBOL_RECTANGLE};
 
-        local r2 = {"cell_size" : QL720NW_BARCODE_2D_CELL_SIZE_5, 
+        local r2 = {"cell_size" : 5, 
                      "symbol_type" : QL720NW_BARCODE_2D_DM_SYMBOL_RECTANGLE, 
-                     "vertical_size" : QL720NW_BARCODE_2D_DM_VERTICAL_8,
-                     "horizontal_size" : QL720NW_BARCODE_2D_DM_HORIZONTAL_18 };
+                     "vertical_size" : 8,
+                     "horizontal_size" : 18 };
 
-        local r3 = {"cell_size" : QL720NW_BARCODE_2D_CELL_SIZE_5, 
+        local r3 = {"cell_size" : 5, 
                      "symbol_type" : QL720NW_BARCODE_2D_DM_SYMBOL_RECTANGLE, 
-                     "vertical_size" : QL720NW_BARCODE_2D_DM_VERTICAL_12,
-                     "horizontal_size" : QL720NW_BARCODE_2D_DM_HORIZONTAL_26 };
+                     "vertical_size" : 12,
+                     "horizontal_size" : 26 };
 
-        local r4 = {"cell_size" : QL720NW_BARCODE_2D_CELL_SIZE_5, 
+        local r4 = {"cell_size" : 5, 
                      "symbol_type" : QL720NW_BARCODE_2D_DM_SYMBOL_RECTANGLE, 
-                     "vertical_size" : QL720NW_BARCODE_2D_DM_VERTICAL_16,
-                     "horizontal_size" : QL720NW_BARCODE_2D_DM_HORIZONTAL_48 };
+                     "vertical_size" : 16,
+                     "horizontal_size" : 48 };
 
         printer.setOrientation(QL720NW_PORTRAIT)
                .write2dBarcode("sq1", QL720NW_BARCODE_2D_DATAMATRIX, s1)
