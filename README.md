@@ -5,8 +5,10 @@ This is a driver library for the Brother Label Printer. The printer’s data she
 **To use this library, add the following statement to the top of your device code:**
 
 ```squirrel
-#require "QL720NW.device.lib.nut:0.3.0"
+#require "QL720NW.device.lib.nut:1.0.0"
 ```
+
+[![Build Status](https://api.travis-ci.org/electricimp/QL720NW.svg?branch=master)](https://travis-ci.org/electricimp/QL720NW)
 
 ## Class Usage
 
@@ -276,14 +278,14 @@ The *write2dBarcode()* method creates a 2D barcode. This method takes two requir
 | ----------------- | --------------------- | ----------------------------------- | --------------- |
 | *cell_size*       | integer               | 3                                   | Specifies the dot size per cell side. Supported values are 3, 4, 5, 6, 8, 10 |
 | *symbol_type*     | Symbol Type Constant  | QL720NW_BARCODE_2D_DM_SYMBOL_SQUARE | Symbol type to be used. Square: QL720NW_BARCODE_2D_DM_SYMBOL_SQUARE, Rectangular: QL720NW_BARCODE_2D_DM_SYMBOL_RECTANGLE |
-| *vertical_size*   | integer               | 0 (Auto)                            | Specifies the vertical number of cells. Supported vaules for square type are 0(Auto), 10, 12, 14, 16, 18, 20, 22, 24, 26, 32, 36, 40, 44, 48, 52, 64, 72, 80, 88, 96, 104, 120, 132, 144. Supported vaules for rectangular type are 0(Auto), 8, 12, 16 |
-| *horizontal_size* | integer               | 0 (Auto)                            | Specifies the horizontal number of cells. If square type is selected horizontal size with be set to match the vertical size. The horizontal_size is only supported in conjunction with specific vertical_sizes. See table below for supported rectangular horizontal cell sizes. |
+| *vertical_size*   | integer               | 0                                   | Specifies the vertical number of cells. Supported vaules for square type are 0 (Auto), 10, 12, 14, 16, 18, 20, 22, 24, 26, 32, 36, 40, 44, 48, 52, 64, 72, 80, 88, 96, 104, 120, 132, 144. Supported vaules for rectangular type are 0 (Auto), 8, 12, 16 |
+| *horizontal_size* | integer               | 0                                   | Specifies the horizontal number of cells. If square type is selected horizontal size with be set to match the vertical size. The horizontal_size is only supported in conjunction with specific vertical_sizes. See table below for supported rectangular horizontal cell sizes. |
 
 #### Data Matrix Rectangular Horizontal Size
 
 | Horizontal Cell Size | Data Type | Supported Vertical Cell Size |
 | -------------------- | --------- | ---------------------------- |
-| *0 (Auto)*           | integer   | Auto                         |
+| *0*                  | integer   | Auto                         |
 | *18*                 | integer   | 8 cells                      |
 | *32*                 | integer   | 8 cells                      |
 | *26*                 | integer   | 12 cells                     |
