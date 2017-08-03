@@ -4,14 +4,6 @@ class AutomatedPrintingTests extends ImpTestCase {
 
     printer = null;
 
-    // Currently the UART buffer drops data when the printer 
-    // is printing a label.
-    // To prevent data being dropped use this pause function to 
-    // add time between prints
-    function pause(time) {
-        imp.sleep(time);
-    }
-
     // Setup is written for an imp001 
     // If connecting a printer this is the configuration for a (kelly) connected with a DB9 connector
     function setUp() {
@@ -53,7 +45,7 @@ class AutomatedPrintingTests extends ImpTestCase {
 
         // Clear print buffer
         expected = blob();
-        printer.print();
+        printer._buffer = blob();
         assertEqual(expected.tostring(), printer._buffer.tostring());
     }
 
@@ -77,7 +69,7 @@ class AutomatedPrintingTests extends ImpTestCase {
 
         // Clear print buffer
         expected = blob();
-        printer.print();
+        printer._buffer = blob();
         assertEqual(expected.tostring(), printer._buffer.tostring());
     }
 
@@ -127,7 +119,7 @@ class AutomatedPrintingTests extends ImpTestCase {
 
         // Clear print buffer
         expected = blob();
-        printer.print();
+        printer._buffer = blob();
         assertEqual(expected.tostring(), printer._buffer.tostring());
     }
 
@@ -177,7 +169,7 @@ class AutomatedPrintingTests extends ImpTestCase {
 
         // Clear print buffer
         expected = blob();
-        printer.print();
+        printer._buffer = blob();
         assertEqual(expected.tostring(), printer._buffer.tostring());
     }
 
@@ -191,7 +183,7 @@ class AutomatedPrintingTests extends ImpTestCase {
 
         // Clear print buffer
         expected = blob();
-        printer.print();
+        printer._buffer = blob();
         assertEqual(expected.tostring(), printer._buffer.tostring());
     }
 
@@ -211,7 +203,7 @@ class AutomatedPrintingTests extends ImpTestCase {
         
         // Clear print buffer
         expected = blob();
-        printer.print();
+        printer._buffer = blob();
         assertEqual(expected.tostring(), printer._buffer.tostring());
 
         // Check QL720NW_BARCODE_CODE39
@@ -221,7 +213,7 @@ class AutomatedPrintingTests extends ImpTestCase {
 
         // Clear print buffer
         expected = blob();
-        printer.print();
+        printer._buffer = blob();
         assertEqual(expected.tostring(), printer._buffer.tostring());
 
         // Check QL720NW_BARCODE_ITF
@@ -231,7 +223,7 @@ class AutomatedPrintingTests extends ImpTestCase {
 
         // Clear print buffer
         expected = blob();
-        printer.print();
+        printer._buffer = blob();
         assertEqual(expected.tostring(), printer._buffer.tostring());
 
         // Check QL720NW_BARCODE_EAN_8_13
@@ -241,7 +233,7 @@ class AutomatedPrintingTests extends ImpTestCase {
 
         // Clear print buffer
         expected = blob();
-        printer.print();
+        printer._buffer = blob();
         assertEqual(expected.tostring(), printer._buffer.tostring());
 
         // Check QL720NW_BARCODE_UPC_A
@@ -251,7 +243,7 @@ class AutomatedPrintingTests extends ImpTestCase {
 
         // Clear print buffer
         expected = blob();
-        printer.print();
+        printer._buffer = blob();
         assertEqual(expected.tostring(), printer._buffer.tostring());
 
         // Check QL720NW_BARCODE_UPC_E
@@ -261,7 +253,7 @@ class AutomatedPrintingTests extends ImpTestCase {
 
         // Clear print buffer
         expected = blob();
-        printer.print();
+        printer._buffer = blob();
         assertEqual(expected.tostring(), printer._buffer.tostring());
 
         // Check QL720NW_BARCODE_CODABAR
@@ -271,7 +263,7 @@ class AutomatedPrintingTests extends ImpTestCase {
 
         // Clear print buffer
         expected = blob();
-        printer.print();
+        printer._buffer = blob();
         assertEqual(expected.tostring(), printer._buffer.tostring());
 
         // Check QL720NW_BARCODE_CODE128
@@ -281,7 +273,7 @@ class AutomatedPrintingTests extends ImpTestCase {
 
         // Clear print buffer
         expected = blob();
-        printer.print();
+        printer._buffer = blob();
         assertEqual(expected.tostring(), printer._buffer.tostring());
 
         // Check QL720NW_BARCODE_GS1_128
@@ -291,7 +283,7 @@ class AutomatedPrintingTests extends ImpTestCase {
 
         // Clear print buffer
         expected = blob();
-        printer.print();
+        printer._buffer = blob();
         assertEqual(expected.tostring(), printer._buffer.tostring());        
 
         // Check QL720NW_BARCODE_RSS
@@ -301,7 +293,7 @@ class AutomatedPrintingTests extends ImpTestCase {
 
         // Clear print buffer
         expected = blob();
-        printer.print();
+        printer._buffer = blob();
         assertEqual(expected.tostring(), printer._buffer.tostring());   
 
         // Check QL720NW_BARCODE_CODE93
@@ -311,7 +303,7 @@ class AutomatedPrintingTests extends ImpTestCase {
 
         // Clear print buffer
         expected = blob();
-        printer.print();
+        printer._buffer = blob();
         assertEqual(expected.tostring(), printer._buffer.tostring());  
 
         // Check QL720NW_BARCODE_POSTNET
@@ -321,7 +313,7 @@ class AutomatedPrintingTests extends ImpTestCase {
 
         // Clear print buffer
         expected = blob();
-        printer.print();
+        printer._buffer = blob();
         assertEqual(expected.tostring(), printer._buffer.tostring()); 
 
         // Check QL720NW_BARCODE_UPC_EXTENTION
@@ -331,7 +323,7 @@ class AutomatedPrintingTests extends ImpTestCase {
 
         // Clear print buffer
         expected = blob();
-        printer.print();
+        printer._buffer = blob();
         assertEqual(expected.tostring(), printer._buffer.tostring()); 
 
     }
@@ -347,7 +339,7 @@ class AutomatedPrintingTests extends ImpTestCase {
 
         // Clear print buffer
         expected = blob();
-        printer.print();
+        printer._buffer = blob();
         assertEqual(expected.tostring(), printer._buffer.tostring()); 
 
         // Check width QL720NW_BARCODE_WIDTH_XXS
@@ -357,7 +349,7 @@ class AutomatedPrintingTests extends ImpTestCase {
 
         // Clear print buffer
         expected = blob();
-        printer.print();
+        printer._buffer = blob();
         assertEqual(expected.tostring(), printer._buffer.tostring()); 
 
         // Check width QL720NW_BARCODE_WIDTH_XS
@@ -367,7 +359,7 @@ class AutomatedPrintingTests extends ImpTestCase {
 
         // Clear print buffer
         expected = blob();
-        printer.print();
+        printer._buffer = blob();
         assertEqual(expected.tostring(), printer._buffer.tostring()); 
 
         // Check width QL720NW_BARCODE_WIDTH_S
@@ -377,7 +369,7 @@ class AutomatedPrintingTests extends ImpTestCase {
 
         // Clear print buffer
         expected = blob();
-        printer.print();
+        printer._buffer = blob();
         assertEqual(expected.tostring(), printer._buffer.tostring()); 
 
         // Check width QL720NW_BARCODE_WIDTH_M
@@ -387,7 +379,7 @@ class AutomatedPrintingTests extends ImpTestCase {
 
         // Clear print buffer
         expected = blob();
-        printer.print();
+        printer._buffer = blob();
         assertEqual(expected.tostring(), printer._buffer.tostring()); 
 
         // Check width QL720NW_BARCODE_WIDTH_L
@@ -397,7 +389,7 @@ class AutomatedPrintingTests extends ImpTestCase {
 
         // Clear print buffer
         expected = blob();
-        printer.print();
+        printer._buffer = blob();
         assertEqual(expected.tostring(), printer._buffer.tostring()); 
 
         // Check height
@@ -407,7 +399,7 @@ class AutomatedPrintingTests extends ImpTestCase {
 
         // Clear print buffer
         expected = blob();
-        printer.print();
+        printer._buffer = blob();
         assertEqual(expected.tostring(), printer._buffer.tostring()); 
 
         // Check ratio QL720NW_BARCODE_RATIO_3_1
@@ -417,7 +409,7 @@ class AutomatedPrintingTests extends ImpTestCase {
 
         // Clear print buffer
         expected = blob();
-        printer.print();
+        printer._buffer = blob();
         assertEqual(expected.tostring(), printer._buffer.tostring()); 
 
         // Check ratio QL720NW_BARCODE_RATIO_25_1
@@ -427,7 +419,7 @@ class AutomatedPrintingTests extends ImpTestCase {
 
         // Clear print buffer
         expected = blob();
-        printer.print();
+        printer._buffer = blob();
         assertEqual(expected.tostring(), printer._buffer.tostring()); 
 
         // Check ratio QL720NW_BARCODE_RATIO_2_1
@@ -437,7 +429,7 @@ class AutomatedPrintingTests extends ImpTestCase {
 
         // Clear print buffer
         expected = blob();
-        printer.print();
+        printer._buffer = blob();
         assertEqual(expected.tostring(), printer._buffer.tostring()); 
     }
 
@@ -453,7 +445,7 @@ class AutomatedPrintingTests extends ImpTestCase {
 
         // Clear print buffer
         expected = blob();
-        printer.print();
+        printer._buffer = blob();
         assertEqual(expected.tostring(), printer._buffer.tostring()); 
 
         // Check cell_size 10 (no need to check all settings, since we just pass in an integer)
@@ -463,7 +455,7 @@ class AutomatedPrintingTests extends ImpTestCase {
 
         // Clear print buffer
         expected = blob();
-        printer.print();
+        printer._buffer = blob();
         assertEqual(expected.tostring(), printer._buffer.tostring()); 
 
         // Check symbol_type QL720NW_BARCODE_2D_QR_SYMBOL_MODEL_1
@@ -473,7 +465,7 @@ class AutomatedPrintingTests extends ImpTestCase {
 
         // Clear print buffer
         expected = blob();
-        printer.print();
+        printer._buffer = blob();
         assertEqual(expected.tostring(), printer._buffer.tostring());
 
         // Check symbol_type QL720NW_BARCODE_2D_QR_SYMBOL_MODEL_2
@@ -483,7 +475,7 @@ class AutomatedPrintingTests extends ImpTestCase {
 
         // Clear print buffer
         expected = blob();
-        printer.print();
+        printer._buffer = blob();
         assertEqual(expected.tostring(), printer._buffer.tostring());
 
         // Check symbol_type QL720NW_BARCODE_2D_QR_SYMBOL_MICRO_QR
@@ -493,7 +485,7 @@ class AutomatedPrintingTests extends ImpTestCase {
 
         // Clear print buffer
         expected = blob();
-        printer.print();
+        printer._buffer = blob();
         assertEqual(expected.tostring(), printer._buffer.tostring());
 
         // Check structured_append_partitioned 
@@ -503,27 +495,27 @@ class AutomatedPrintingTests extends ImpTestCase {
 
         // Clear print buffer
         expected = blob();
-        printer.print();
+        printer._buffer = blob();
         assertEqual(expected.tostring(), printer._buffer.tostring());
 
         // Check structured_append_partitioned 
         expected.writestring(format("%c%c%c%c%c%c%c%c%c%c%c%s%c%c%c", 0x1B, 0x69, 0x71, 3, 0x02, 0x01, 0x01, 0x03, 0x31, 0x02, 0x00, "123", 0x5C, 0x5C, 0x5C));
-        printer.write2dBarcode("123", type, {"structured_append_partitioned" : true, "code_number" : 1, "num_partitions" 3, "parity_data" : 0x31});
+        printer.write2dBarcode("123", type, {"structured_append_partitioned" : true, "code_number" : 1, "num_partitions" : 3, "parity_data" : 0x31});
         assertEqual(expected.tostring(), printer._buffer.tostring());
 
         // Check structured_append_partitioned 
         expected.writestring(format("%c%c%c%c%c%c%c%c%c%c%c%s%c%c%c", 0x1B, 0x69, 0x71, 3, 0x02, 0x01, 0x02, 0x03, 0x31, 0x02, 0x00, "456", 0x5C, 0x5C, 0x5C));
-        printer.write2dBarcode("456", type, {"structured_append_partitioned" : true, "code_number" : 2, "num_partitions" 3, "parity_data" : 0x31});
+        printer.write2dBarcode("456", type, {"structured_append_partitioned" : true, "code_number" : 2, "num_partitions" : 3, "parity_data" : 0x31});
         assertEqual(expected.tostring(), printer._buffer.tostring());
 
         // Check structured_append_partitioned 
         expected.writestring(format("%c%c%c%c%c%c%c%c%c%c%c%s%c%c%c", 0x1B, 0x69, 0x71, 3, 0x02, 0x01, 0x03, 0x03, 0x31, 0x02, 0x00, "789", 0x5C, 0x5C, 0x5C));
-        printer.write2dBarcode("789", type, {"structured_append_partitioned" : true, "code_number" : 3, "num_partitions" 3, "parity_data" : 0x31});
+        printer.write2dBarcode("789", type, {"structured_append_partitioned" : true, "code_number" : 3, "num_partitions" : 3, "parity_data" : 0x31});
         assertEqual(expected.tostring(), printer._buffer.tostring());
 
         // Clear print buffer
         expected = blob();
-        printer.print();
+        printer._buffer = blob();
         assertEqual(expected.tostring(), printer._buffer.tostring());
 
         // Check error_correction QL720NW_BARCODE_2D_QR_ERROR_CORRECTION_HIGH_DENSITY
@@ -533,7 +525,7 @@ class AutomatedPrintingTests extends ImpTestCase {
 
         // Clear print buffer
         expected = blob();
-        printer.print();
+        printer._buffer = blob();
         assertEqual(expected.tostring(), printer._buffer.tostring());
 
         // Check error_correction 
@@ -543,7 +535,7 @@ class AutomatedPrintingTests extends ImpTestCase {
 
         // Clear print buffer
         expected = blob();
-        printer.print();
+        printer._buffer = blob();
         assertEqual(expected.tostring(), printer._buffer.tostring());
 
         // Check error_correction 
@@ -553,7 +545,7 @@ class AutomatedPrintingTests extends ImpTestCase {
 
         // Clear print buffer
         expected = blob();
-        printer.print();
+        printer._buffer = blob();
         assertEqual(expected.tostring(), printer._buffer.tostring());
 
         // Check error_correction 
@@ -563,7 +555,7 @@ class AutomatedPrintingTests extends ImpTestCase {
 
         // Clear print buffer
         expected = blob();
-        printer.print();
+        printer._buffer = blob();
         assertEqual(expected.tostring(), printer._buffer.tostring());
 
         // Check data_input_method 
@@ -573,7 +565,7 @@ class AutomatedPrintingTests extends ImpTestCase {
 
         // Clear print buffer
         expected = blob();
-        printer.print();
+        printer._buffer = blob();
         assertEqual(expected.tostring(), printer._buffer.tostring());
 
         // Check data_input_method 
@@ -583,7 +575,7 @@ class AutomatedPrintingTests extends ImpTestCase {
 
         // Clear print buffer
         expected = blob();
-        printer.print();
+        printer._buffer = blob();
         assertEqual(expected.tostring(), printer._buffer.tostring());
     }
 
@@ -599,7 +591,7 @@ class AutomatedPrintingTests extends ImpTestCase {
 
         // Clear print buffer
         expected = blob();
-        printer.print();
+        printer._buffer = blob();
         assertEqual(expected.tostring(), printer._buffer.tostring());
 
         // Check cell_size 6 (no need to check all settings, since we just pass in an integer)
@@ -609,7 +601,7 @@ class AutomatedPrintingTests extends ImpTestCase {
 
         // Clear print buffer
         expected = blob();
-        printer.print();
+        printer._buffer = blob();
         assertEqual(expected.tostring(), printer._buffer.tostring());
 
         // Check symbol_type
@@ -619,7 +611,7 @@ class AutomatedPrintingTests extends ImpTestCase {
 
         // Clear print buffer
         expected = blob();
-        printer.print();
+        printer._buffer = blob();
         assertEqual(expected.tostring(), printer._buffer.tostring());        
 
         // Check symbol_type
@@ -629,7 +621,7 @@ class AutomatedPrintingTests extends ImpTestCase {
 
         // Clear print buffer
         expected = blob();
-        printer.print();
+        printer._buffer = blob();
         assertEqual(expected.tostring(), printer._buffer.tostring());  
 
         // Check size
@@ -639,7 +631,7 @@ class AutomatedPrintingTests extends ImpTestCase {
 
         // Clear print buffer
         expected = blob();
-        printer.print();
+        printer._buffer = blob();
         assertEqual(expected.tostring(), printer._buffer.tostring());        
 
         // Check size 
@@ -649,8 +641,12 @@ class AutomatedPrintingTests extends ImpTestCase {
 
         // Clear print buffer
         expected = blob();
-        printer.print();
+        printer._buffer = blob();
         assertEqual(expected.tostring(), printer._buffer.tostring()); 
+    }
+
+    function tearDown() {
+        info("Barcode Manual Tests Done");
     }
 
 }

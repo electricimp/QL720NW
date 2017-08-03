@@ -1,7 +1,7 @@
 {
-    "modelId": "uBUBEAO70tY1" /* PrinterTesting */,
+    "modelId": "qryDFGlK1tUd" /* Model B */,
     "devices": [
-        "2320a8b236a7c9ee" /* 2320a8b236a7c9ee */
+        "233f4aafaf952dee" /* 233f4aafaf952dee */
     ],
     "agentFile": false,
     "deviceFile": "QL720NW.device.lib.nut",
