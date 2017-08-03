@@ -238,7 +238,13 @@ class QL720NW {
     }
 
     function newline() {
-        return write(QL720NW_TEXT_NEWLINE.tochar());
+        _buffer.writen(QL720NW_TEXT_NEWLINE, 'b');
+        return this;
+    }
+
+    function pageFeed () {
+        _buffer.writen(QL720NW_PAGE_FEED, 'b');
+        return this;
     }
 
     // Barcode commands

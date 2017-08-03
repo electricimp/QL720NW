@@ -98,7 +98,7 @@ printer
 
 ### setFont(*font*)
 
-The *setFont()* method sets the font using the *font* parameter. The table below lists the supported font name constants. 
+The *setFont()* method sets the font using the *font* parameter. The table below lists the supported font name constants. Brougham is the default font.
 
 | Font Constant |
 | --- |
@@ -108,7 +108,7 @@ The *setFont()* method sets the font using the *font* parameter. The table below
 | *QL720NW_FONT_HELSINKI* |
 | *QL720NW_FONT_SAN_DIEGO* |
 
-**Note:** *setFont()* settings are stored to the print buffer, so will only effect things added to the print buffer after the *setFont()* method is called and these settings are cleared whenever the *print()* method is called.
+**Note:** *setFont()* settings only effect text entered after the method is called. Font settings are often cleared after *pageFeed()* or *print()* methods are called, so it is best to set the font for each label.
 
 ```squirrel
 // Set font to Helsinki
@@ -117,19 +117,19 @@ printer.setFont(QL720NW_FONT_HELSINKI);
 
 ### setFontSize(*size*)
 
-The *setFontSize()* method sets the font size (in points) using the *size* parameter. The value passed into *size* is not arbitrary, but must be one of three possible constants:
+The *setFontSize()* method sets the font size (in points) using the *size* parameter. Default font size is 32. Currently the only supported *size* values are the following constants:
 
-| Size Constant |
-| --- |
+| Size Constant          |
+| ---------------------- |
 | *QL720NW_FONT_SIZE_24* |
 | *QL720NW_FONT_SIZE_32* |
 | *QL720NW_FONT_SIZE_48* |
 
-**Note:** *setFontSize()* settings are stored to the print buffer, so will only effect things added to the print buffer after the *setFont()* method is called and these settings are cleared whenever the *print()* method is called.
+**Note:** *setFontSize()* settings only effect text entered after the method is called. Font settings are often cleared after *pageFeed()* or *print()* methods are called, so it is best to set the font size for each label.
 
 ```squirrel
-// Set font size to 32
-printer.setFontSize(QL720NW_FONT_SIZE_32);
+// Set font size to 48
+printer.setFontSize(QL720NW_FONT_SIZE_48);
 ```
 
 ### write(*text[, options]*)
@@ -175,9 +175,23 @@ printer.setFont(QL720NW_FONT_SAN_DIEGO)
        .print();
 ```
 
+### pageFeed()
+
+The *pageFeed()* method adds a page feed character to the print buffer. Please note after a page feed font and fontSize settings are often reset to defaults.
+
+```squirrel
+// Print two labels in one print job
+printer.setFont(QL720NW_FONT_SAN_DIEGO)
+       .setFontSize(QL720NW_FONT_SIZE_48)
+       .write("Hello World")
+       .pageFeed()
+       .write("I'm Alive!")
+       .print();
+```
+
 ### writeBarcode(*data[, config]*)
 
-The *writeBarcode()* method specifies a barcode to be printed. It has one required parameter, *data*, which is a numerical value. It also has one optional parameter, *config*, which takes a table of configuration parameters.
+The *writeBarcode()* method specifies a barcode to be printed. It has one required parameter, *data*, which is a integer or string value. It also has one optional parameter, *config*, which takes a table of configuration parameters.
 
 #### Configuration Table
 
@@ -240,7 +254,9 @@ printer.writeBarcode(imp.getmacaddress(), barcodeConfig)
 
 ### write2dBarcode(*data, type[, config]*)
 
-The *write2dBarcode()* method creates a 2D barcode. This method takes two required parameters: *data*, the data to be printed as a barcode, and *type*, the type of barcode to be printed. Currently the supported 2D types are QR, selected by passing in the constant *QL720NW_BARCODE_2D_QR*, and Data Matrix, selected by passing in the constant *QL720NW_BARCODE_2D_DATAMATRIX*. The method also takes one optional parameter, *config*, which takes a table of configuration parameters. Which configuration parameters are available depends on which type of 2D barcode you select &mdash; both sets are listed below.
+The *write2dBarcode()* method creates a 2D barcode. This method takes two required parameters: a string or integer *data*, wich contains the data to be printed as a barcode, and *type*, the type of barcode to be printed. This method also takes one optional parameter, *config*, which takes a table of configuration parameters. Which configuration parameters are available depends on which type of 2D barcode you select &mdash; both sets are listed in the tables below.
+
+Currently the supported 2D types are QR, selected by passing in the constant *QL720NW_BARCODE_2D_QR*, and Data Matrix, selected by passing in the constant *QL720NW_BARCODE_2D_DATAMATRIX*. 
 
 #### QR Configuration Table
 
@@ -320,8 +336,8 @@ printer.write("Hello World")
 
 ## To Do
 
-- Bug fix needed. Printer drops uart commands while printing. Workaround add a pause after calling print method.
-- Test various barcode setting combinations. These have been lightly tested. Not all combinations have been covered and not all barcodes are readable when printed.
+- Issue: Printer appears to drop uart commands while printing. Workaround add a pause after calling print method.
+- Issue: Printer is inconsistant when resetting font and font size between print jobs. Workaround always set font and font size for each label printed.
 - Not all features have been implemented, may want to add more functionality to driver.
 
 ## License

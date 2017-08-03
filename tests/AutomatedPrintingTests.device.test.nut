@@ -211,7 +211,21 @@ class AutomatedPrintingTests extends ImpTestCase {
         assertEqual(expected.tostring(), printer._buffer.tostring());
     }
 
-    function test6_writeBarcode_types() {
+    function test6_pageFeed() {
+        local expected = blob();
+
+        // Check pageFeed
+        expected.writen(0x0C, 'b');
+        printer.pageFeed();
+        assertEqual(expected.tostring(), printer._buffer.tostring());
+
+        // Clear print buffer
+        expected = blob();
+        printer._buffer = blob();
+        assertEqual(expected.tostring(), printer._buffer.tostring());
+    }
+
+    function test7_writeBarcode_types() {
         local expected = blob();
         local barcodeData = 12345;
         local eanData = 1234567;
@@ -352,7 +366,7 @@ class AutomatedPrintingTests extends ImpTestCase {
 
     }
 
-    function test7_writeBarcode_params() {
+    function test8_writeBarcode_params() {
         local expected = blob();
         local barcodeData = 12345;
 
@@ -457,7 +471,7 @@ class AutomatedPrintingTests extends ImpTestCase {
         assertEqual(expected.tostring(), printer._buffer.tostring()); 
     }
 
-    function test8_write2dbarcode_QR() {
+    function test9_write2dbarcode_QR() {
         local expected = blob();
         local barcodeData = 12345;
         local type = QL720NW_BARCODE_2D_QR;
@@ -603,7 +617,7 @@ class AutomatedPrintingTests extends ImpTestCase {
         assertEqual(expected.tostring(), printer._buffer.tostring());
     }
 
-    function test9_write2dbarcode_DM() {
+    function test10_write2dbarcode_DM() {
         local expected = blob();
         local barcodeData = 12345;
         local type = QL720NW_BARCODE_2D_DATAMATRIX;

@@ -135,7 +135,19 @@ class ManualBasicPrintingTests extends ImpTestCase {
         pause(0.5);
     }
 
-    function test7_MarginsSet() {
+    function test7_PageFeed() {
+        printer.setOrientation(QL720NW_PORTRAIT);
+
+        printer.setFont(QL720NW_FONT_SAN_DIEGO)
+               .setFontSize(QL720NW_FONT_SIZE_32)
+               .write("Label 1: Custom font settings")
+               .pageFeed()
+               .write("Label 2: Default font settings")
+               .print();
+        pause(0.5);
+    }
+
+    function test8_MarginsSet() {
         printer.setOrientation(QL720NW_PORTRAIT);
         printer.writen("text written to buffer before margin set")
         printer.setRightMargin(15)
@@ -152,7 +164,7 @@ class ManualBasicPrintingTests extends ImpTestCase {
         pause(3);
     }
 
-    function test8_MarginsIgnored() {
+    function test9_MarginsIgnored() {
 
         printer.setOrientation(QL720NW_PORTRAIT);
         printer.writen("margins set to L:25 R:25")
