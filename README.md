@@ -256,15 +256,15 @@ printer.writeBarcode(imp.getmacaddress(), barcodeConfig)
 
 The *write2dBarcode()* method creates a 2D barcode. This method takes two required parameters: a string or integer *data*, wich contains the data to be printed as a barcode, and *type*, the type of barcode to be printed. This method also takes one optional parameter, *config*, which takes a table of configuration parameters. Which configuration parameters are available depends on which type of 2D barcode you select &mdash; both sets are listed in the tables below.
 
-Currently the supported 2D types are QR, selected by passing in the constant *QL720NW_BARCODE_2D_QR*, and Data Matrix, selected by passing in the constant *QL720NW_BARCODE_2D_DATAMATRIX*. 
+The supported 2D types are QR, selected by passing in the constant *QL720NW_BARCODE_2D_QR*, and Data Matrix, selected by passing in the constant *QL720NW_BARCODE_2D_DATAMATRIX*. 
 
 #### QR Configuration Table
 
 | Config Table Key                | Value Data type            | Default Value                                     | Description     |
 | ------------------------------- | -------------------------- | ------------------------------------------------- | --------------- |
-| *cell_size*                     | integer                    | 3                                                 | Specifies the dot size per cell side. Supported values are 3, 4, 5, 6, 8, 10 |
+| *cell_size*                     | Integer                    | 3                                                 | Specifies the dot size per cell side. Supported values are 3, 4, 5, 6, 8, 10 |
 | *symbol_type*                   | Symbol Type Constant       | QL720NW_BARCODE_2D_QR_SYMBOL_MODEL_2              | Symbol type to be used. See table below |
-| *structured_append_partitioned* | Boolean                    | false                                             | Whether the structured append is partitioned |
+| *structured_append_partitioned* | Boolean                    | `false`                                           | Whether the structured append is partitioned |
 | *code_number*                   | Integer                    | 0                                                 | Indicates the number of the symbol in a partitioned QR Code. Must set a number between 1-16 if *structured_append_partitioned* is set to `true` |
 | *num_partitions*                | Integer                    | 0                                                 | Indicates the total number of symbols in a partitioned QR Code. Must set a number between 2-16 if *structured_append_partitioned* is set to `true` |
 | *parity_data*                   | hexadecimal                | 0                                                 | Value in bytes of exclusively OR-ing all the print data (print data before partition) |
@@ -317,6 +317,7 @@ dataMatrixSettings <- { "cell_size" : 8 };
 
 // write QR barcode
 printer.write2dBarcode(mac, QL720NW_BARCODE_2D_QR, qrSettings);
+
 // write dataMatrix barcode
 printer.write2dBarcode(mac, QL720NW_BARCODE_2D_DATAMATRIX, dataMatrixSettings);
 
