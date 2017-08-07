@@ -1,6 +1,6 @@
 # QL720NW
 
-This is a driver library for the Brother Label Printer. The printer’s data sheet can be found [here](./cv_ql720_eng_escp_100.pdf). This library exposes basic text and barcode print functionality. It does not implement all of the functionality of the printer as outlined in the data sheet. Please submit pull requests for added features.  
+This is a driver library for the Brother Label Printer. The printer’s data sheet can be found [here](./cv_ql720_eng_escp_100.pdf). This library exposes basic text and barcode print functionality. It does not implement all of the functionality of the printer as outlined in the data sheet. Please submit pull requests for features that you would like to be added.  
 
 **To use this library, add the following statement to the top of your device code:**
 
@@ -50,7 +50,7 @@ printer.initialize();
 
 The *setOrientation()* method sets the orientation of the printed text. It takes one required parameter, *orientation*, which should be either of the constants *QL720NW_LANDSCAPE* or *QL720NW_PORTRAIT*.
 
-**Note:** The parameter set by the *setOrientation()* method are immediately written to UART when called, and so will take effect immediately and effect everything stored in the print buffer.
+**Note** The parameter set by *setOrientation()* is written to UART when the method is called, and so will take effect immediately and affect everything stored in the print buffer.
 
 ```squirrel
 // Set to landscape mode
@@ -66,13 +66,13 @@ printer.setOrientation(QL720NW_PORTRAIT);
 
 The *setRightMargin()* method sets the right margin. It takes one required parameter, *column*, which is an integer. The position of the right margin is the character width times *column* from the left edge. See the ‘Margin Notes’ diagram, below, for more details.
 
-**Note:** The parameter set by the *setRightMargin()* method are immediately written to UART when called, and so will take effect immediately and effect everything stored in the print buffer.
+**Note** The parameter set by *setRightMargin()* is written to UART when the method is called, and so will take effect immediately and affect everything stored in the print buffer.
 
 ### setLeftMargin(*column*)
 
 The *setLeftMargin()* method sets the left margin. It takes one required parameter, *column*, which is an integer. The position of the left margin is the character width times *column* from the left edge. See the ‘Margin Notes’ diagram, below, for more details.
 
-**Note:** The parameter set by the *setLeftMargin()* method are immediately written to UART when called, and so will take effect immediately and effect everything stored in the print buffer.
+**Note** The parameter set by *setLeftMargin()* is written to UART when the method is called, and so will take effect immediately and affect everything stored in the print buffer.
 
 #### Margin Notes
 
@@ -108,7 +108,7 @@ The *setFont()* method sets the font using the *font* parameter. The table below
 | *QL720NW_FONT_HELSINKI* |
 | *QL720NW_FONT_SAN_DIEGO* |
 
-**Note:** *setFont()* settings only effect text entered after the method is called. Font settings are often cleared after *pageFeed()* or *print()* methods are called, so it is best to set the font for each label.
+**Note** *setFont()* settings only effect text entered *after* the method is called. Font settings are often cleared after *pageFeed()* or *print()* are called, so it is best to set the font for each label.
 
 ```squirrel
 // Set font to Helsinki
@@ -125,7 +125,7 @@ The *setFontSize()* method sets the font size (in points) using the *size* param
 | *QL720NW_FONT_SIZE_32* |
 | *QL720NW_FONT_SIZE_48* |
 
-**Note:** *setFontSize()* settings only effect text entered after the method is called. Font settings are often cleared after *pageFeed()* or *print()* methods are called, so it is best to set the font size for each label.
+**Note** *setFontSize()* settings only effect text entered *after* the method is called. Font settings are often cleared after *pageFeed()* or *print()* are called, so it is best to set the font size for each label.
 
 ```squirrel
 // Set font size to 48
@@ -205,8 +205,8 @@ The *writeBarcode()* method specifies a barcode to be printed. It has one requir
 
 #### Barcode Type
 
-| Barcode Type Constant         | Data Length                                           |
-| ----------------------------- | ----------------------------------------------------- |
+| Barcode Type Constant           | Data Length                                           |
+| ------------------------------- | ----------------------------------------------------- |
 | *QL720NW_BARCODE_CODE39*        | 1-50 characters ("*" is not included)                 |
 | *QL720NW_BARCODE_ITF*           | 1-64 characters                                       |
 | *QL720NW_BARCODE_EAN_8_13*      | 7 characters (EAN-8), 12 characters (EAN-13)          |
@@ -222,8 +222,8 @@ The *writeBarcode()* method specifies a barcode to be printed. It has one requir
 
 #### Barcode Width
 
-| Barcode Width Constant    |
-| ------------------------- |
+| Barcode Width Constant      |
+| --------------------------- |
 | *QL720NW_BARCODE_WIDTH_XXS* |
 | *QL720NW_BARCODE_WIDTH_XS*  |
 | *QL720NW_BARCODE_WIDTH_S*   |
@@ -232,8 +232,8 @@ The *writeBarcode()* method specifies a barcode to be printed. It has one requir
 
 #### Barcode Ratio
 
-| Barcode Ratio Constant     |
-| -------------------------- |
+| Barcode Ratio Constant       |
+| ---------------------------- |
 | *QL720NW_BARCODE_RATIO_2_1*  |
 | *QL720NW_BARCODE_RATIO_25_1* |
 | *QL720NW_BARCODE_RATIO_3_1*  |
