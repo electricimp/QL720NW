@@ -22,7 +22,7 @@
 // ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
 
-#require "QL720NW.device.lib.nut:0.2.0"
+#require "QL720NW.device.lib.nut:1.0.0"
 
 // Configure UART
 uart <- hardware.uart12;
@@ -65,8 +65,8 @@ printer
 // Print font examples data
 printer.print();
 
-// Wait for half a second
-imp.sleep(0.5);
+// Wait for print job to finish
+imp.sleep(5);
 
 // Update font settings
 printer
@@ -86,10 +86,11 @@ printer.writeBarcode(imp.getmacaddress(), barcodeSettings).newline();
 // Print barcodes
 printer.print();
 
-imp.sleep(0.5);
+// Wait for print job to finish
+imp.sleep(5);
 
 // Configure and print QR Code
-qrBarcodeSettings <- { "cell_size": QL720NW_BARCODE_2D_CELL_SIZE_5,
+qrBarcodeSettings <- { "cell_size": 5,
                        "symbol_type": QL720NW_BARCODE_2D_QR_SYMBOL_MODEL_2,
                        "structured_append_partitioned": false,
                        "error_correction": QL720NW_BARCODE_2D_QR_ERROR_CORRECTION_STANDARD,
@@ -98,3 +99,4 @@ qrBarcodeSettings <- { "cell_size": QL720NW_BARCODE_2D_CELL_SIZE_5,
 printer.write2dBarcode(imp.getmacaddress(), QL720NW_BARCODE_2D_QR, qrBarcodeSettings).print();
 
 server.log("Done");
+
