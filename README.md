@@ -117,7 +117,7 @@ printer.setFont(QL720NW_FONT_HELSINKI);
 
 ### setFontSize(*size*)
 
-The *setFontSize()* method sets the font size (in points) using the *size* parameter. Default font size is 32. Currently the only supported *size* values are the following constants:
+The *setFontSize()* method sets the font size (in points) using the *size* parameter. The default font size is 32. Currently the only supported *size* values are the following constants:
 
 | Size Constant          |
 | ---------------------- |
@@ -148,7 +148,7 @@ printer.setFont(QL720NW_FONT_SAN_DIEGO)
 
 ### writen(*text[, options]*)
 
-The *writen()* method sets a line of text to be printed: it automatically prints a New Line character. This method takes one required parameter, *text*, which is a string containing the text to be printed. It also has one optional parameter, *options*. By default no options are set.  Options are selected by OR-ing the class constants *QL720NW_ITALIC*, *QL720NW_BOLD* and *QL720NW_UNDERLINE*..
+The *writen()* method sets a line of text to be printed: it automatically prints a New Line character. This method takes one required parameter, *text*, which is a string containing the text to be printed. It also has one optional parameter, *options*. By default no options are set. Options are selected by OR-ing the class constants *QL720NW_ITALIC*, *QL720NW_BOLD* and *QL720NW_UNDERLINE*.
 
 **Note** This method only stores the text to be printed in a buffer. To print you must also call the *print()* method, as the example below shows.
 
@@ -177,7 +177,7 @@ printer.setFont(QL720NW_FONT_SAN_DIEGO)
 
 ### pageFeed()
 
-The *pageFeed()* method adds a page feed character to the print buffer. Please note after a page feed font and fontSize settings are often reset to defaults.
+The *pageFeed()* method adds a page feed character to the print buffer. Please note after a page feed, font name and font size settings are often reset to defaults.
 
 ```squirrel
 // Print two labels in one print job
@@ -191,7 +191,7 @@ printer.setFont(QL720NW_FONT_SAN_DIEGO)
 
 ### writeBarcode(*data[, config]*)
 
-The *writeBarcode()* method specifies a barcode to be printed. It has one required parameter, *data*, which is a integer or string value. It also has one optional parameter, *config*, which takes a table of configuration parameters.
+The *writeBarcode()* method specifies a barcode to be printed. It has one required parameter, *data*, which is an integer or string value. It also has one optional parameter, *config*, which takes a table of configuration parameters.
 
 #### Configuration Table
 
@@ -336,9 +336,9 @@ printer.write("Hello World")
 
 ## To Do
 
-- Issue: Printer appears to drop uart commands while printing. Workaround add a pause after calling print method.
-- Issue: Printer is inconsistant when resetting font and font size between print jobs. Workaround always set font and font size for each label printed.
-- Not all features have been implemented, may want to add more functionality to driver.
+- Issue: Printer appears to drop UART commands while printing. Workaround: add a pause after calling *print()*.
+- Issue: Printer is inconsistent when setting font and font size between print jobs. Workaround: always set font and font size for each label printed.
+- Not all features have been implemented.
 
 ## License
 
