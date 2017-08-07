@@ -294,7 +294,7 @@ The supported 2D types are QR, selected by passing in the constant *QL720NW_BARC
 | ----------------- | --------------------- | ----------------------------------- | --------------- |
 | *cell_size*       | integer               | 3                                   | Specifies the dot size per cell side. Supported values are 3, 4, 5, 6, 8, 10 |
 | *symbol_type*     | Symbol Type Constant  | QL720NW_BARCODE_2D_DM_SYMBOL_SQUARE | Symbol type to be used. Square: QL720NW_BARCODE_2D_DM_SYMBOL_SQUARE, Rectangular: QL720NW_BARCODE_2D_DM_SYMBOL_RECTANGLE |
-| *vertical_size*   | integer               | 0                                   | Specifies the vertical number of cells. Supported vaules for square type are 0 (Auto), 10, 12, 14, 16, 18, 20, 22, 24, 26, 32, 36, 40, 44, 48, 52, 64, 72, 80, 88, 96, 104, 120, 132, 144. Supported vaules for rectangular type are 0 (Auto), 8, 12, 16 |
+| *vertical_size*   | integer               | 0                                   | Specifies the vertical number of cells. Supported values for square type are 0 (Auto), 10, 12, 14, 16, 18, 20, 22, 24, 26, 32, 36, 40, 44, 48, 52, 64, 72, 80, 88, 96, 104, 120, 132, 144. Supported values for rectangular type are 0 (Auto), 8, 12, 16 |
 | *horizontal_size* | integer               | 0                                   | Specifies the horizontal number of cells. If square type is selected horizontal size with be set to match the vertical size. The horizontal_size is only supported in conjunction with specific vertical_sizes. See table below for supported rectangular horizontal cell sizes. |
 
 #### Data Matrix Rectangular Horizontal Size
