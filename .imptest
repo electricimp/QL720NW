@@ -1,7 +1,7 @@
 {
-    "modelId": "qryDFGlK1tUd" /* Model B */,
+    "modelId": "ms_aQrAdQXki" /* Model H */,
     "devices": [
-        "233d4b6938a609ee" /* 233d4b6938a609ee */
+        "233d4b6938a609ee" /* H */
     ],
     "agentFile": false,
     "deviceFile": "QL720NW.device.lib.nut",
