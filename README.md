@@ -30,7 +30,7 @@ printer
 The *QL720NW* constructor takes one required parameter: a pre-configured imp UART object. You can also supply a boolean parameter, *init*, but this is optional. By default *init* is set to `true` and this causes the constructor to call the *initialize()* method, which will run the setup commands to put the printer in ESC/P standard mode and set up the printer’s defaults.
 
 ```squirrel
-// Configure for QL-720NW Printer
+// Configure QL-720NW Printer
 uart <- hardware.uart12;
 uart.configure(9600, 8, PARITY_NONE, 1, NO_CTSRTS, function() {
     server.log(uart.readstring());
@@ -40,7 +40,7 @@ printer <- QL720NW(uart);
 ```
 
 ```squirrel
-// Configure for QL-1050 Printer
+// Configure QL-1050 Printer
 uart <- hardware.uart12;
 uart.configure(11520, 8, PARITY_NONE, 1, NO_CTSRTS, function() {
     server.log(uart.readstring());
