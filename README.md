@@ -1,6 +1,8 @@
 # QL720NW
 
-This is a driver library for the Brother Label Printer. The printer’s data sheet can be found [here](./cv_ql720_eng_escp_100.pdf). This library exposes basic text and barcode print functionality. It does not implement all of the functionality of the printer as outlined in the data sheet. Please submit pull requests for added features.  
+This is a driver library for the Brother Label Printer QL720NW. The printer’s data sheet can be found [here](./cv_ql720_eng_escp_100.pdf). This library exposes basic text and barcode print functionality. It does not implement all of the functionality of the printer as outlined in the data sheet. Please submit pull requests for added features.  
+
+Note: The QL-720NW has been discontinued and may be hard to purchase. As an alternative we have tested this library on the Brother QL-1050 and confirmed that the driver contained in this library will work for both the Brother QL-720NW and QL-1050 printers. Please note that the default baud rate for the QL-720NW is 9600 and the default baud rate for the QL-1050 is 115200, so the UART will need to be configured accordingly.
 
 **To use this library, add the following statement to the top of your device code:**
 
@@ -28,8 +30,19 @@ printer
 The *QL720NW* constructor takes one required parameter: a pre-configured imp UART object. You can also supply a boolean parameter, *init*, but this is optional. By default *init* is set to `true` and this causes the constructor to call the *initialize()* method, which will run the setup commands to put the printer in ESC/P standard mode and set up the printer’s defaults.
 
 ```squirrel
+// Configure for QL-720NW Printer
 uart <- hardware.uart12;
 uart.configure(9600, 8, PARITY_NONE, 1, NO_CTSRTS, function() {
+    server.log(uart.readstring());
+});
+
+printer <- QL720NW(uart);
+```
+
+```squirrel
+// Configure for QL-1050 Printer
+uart <- hardware.uart12;
+uart.configure(11520, 8, PARITY_NONE, 1, NO_CTSRTS, function() {
     server.log(uart.readstring());
 });
 
@@ -334,11 +347,10 @@ printer.write("Hello World")
        .print();
 ```
 
-## To Do
+## Known Issues
 
-- Issue: Printer appears to drop uart commands while printing. Workaround add a pause after calling print method.
+- Issue: The QL-720NW appears to drop uart commands while printing. Workaround add a pause after calling print method. The QL-1050 does not have this issue.
 - Issue: Printer is inconsistant when resetting font and font size between print jobs. Workaround always set font and font size for each label printed.
-- Not all features have been implemented, may want to add more functionality to driver.
 
 ## License
 

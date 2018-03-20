@@ -31,8 +31,8 @@ class AutomatedPrintingTests extends ImpTestCase {
     // Setup is written for an imp001 
     // If connecting a printer this is the configuration for a (kelly) connected with a DB9 connector
     function setUp() {
-        local uart = hardware.uart12;
-        uart.configure(9600, 8, PARITY_NONE, 1, NO_CTSRTS, function() {
+        local uart = hardware.uart0;
+        uart.configure(115200, 8, PARITY_NONE, 1, NO_CTSRTS, function() {
             server.log(uart.readstring());
         });
 
