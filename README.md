@@ -2,7 +2,7 @@
 
 This is a driver library for the Brother Label Printer QL720NW. The printer’s data sheet can be found [here](./cv_ql720_eng_escp_100.pdf). This library exposes basic text and barcode print functionality. It does not implement all of the functionality of the printer as outlined in the data sheet. Please submit pull requests for added features.  
 
-Note: The QL-720NW has been discontinued and may be hard to purchase. As an alternative we have tested this library on the Brother QL-1050 and confirmed that the driver contained in this library will work for both the Brother QL-720NW and QL-1050 printers. Please note that the default baud rate for the QL-720NW is 9600 and the default baud rate for the QL-1050 is 115200, so the UART will need to be configured accordingly.
+**Note:** The QL-720NW has been discontinued and may be hard to purchase. As an alternative we have tested this library on the Brother QL-1050 and confirmed that the driver contained in this library will work for both the Brother QL-720NW and QL-1050 printers. Please note that the default baud rate for the QL-720NW is 9600 and the default baud rate for the QL-1050 is 115200, so the UART will need to be configured accordingly.
 
 **To use this library, add the following statement to the top of your device code:**
 
