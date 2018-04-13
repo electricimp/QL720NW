@@ -1,0 +1,12 @@
+{
+  "deviceGroupId": "ca83d15f-fcb8-d3c2-ff69-b0d4acb20e9b",
+  "timeout": 30,
+  "stopOnFail": false,
+  "allowDisconnect": false,
+  "builderCache": false,
+  "testFiles": [
+    "*.test.nut",
+    "tests/**/*.test.nut"
+  ],
+  "deviceFile": "QL720NW.device.lib.nut"
+}
