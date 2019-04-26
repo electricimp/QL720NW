@@ -6,7 +6,7 @@ This is a driver library for the Brother Label Printer QL720NW. The printer’s 
 
 **To use this library, add** `#require "QL720NW.device.lib.nut:1.0.0"` **to the top of your device code**
 
-[![Build Status](https://api.travis-ci.org/electricimp/QL720NW.svg?branch=master)](https://travis-ci.org/electricimp/QL720NW)
+![Build Status](https://cse-ci.electricimp.com/app/rest/builds/buildType:(id:Ql720nw_BuildAndTest)/statusIcon)
 
 ## Class Usage ##
 
